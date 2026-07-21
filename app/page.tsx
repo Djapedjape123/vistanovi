@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Image as ImageIcon, Calendar, ArrowRight, Users, Wifi, Waves } from 'lucide-react';
+import { useLanguage } from '@/components/LanguageContext';
 
 // Zamenite ove linkove sa vašim direktnim Cloud linkovima slika
 const HERO_IMAGES = [
@@ -11,14 +12,18 @@ const HERO_IMAGES = [
   'https://res.cloudinary.com/duomot4hp/image/upload/v1784648458/WhatsApp_Image_2026-07-20_at_12.23.04_1_lzqfr2.jpg',
 ];
 
-const FEATURES = [
-  { icon: Users, label: 'Kapacitet do 8 osoba' },
-  { icon: Waves, label: 'Privatni bazen sa slanom vodom' },
-  { icon: Wifi, label: 'Brzi Optički WiFi' },
-];
-
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Dohvatamo funkciju za prevode i trenutni jezik iz Context-a
+  const { t, activeLang } = useLanguage();
+
+  // FEATURES prebacujemo ovde unutra kako bismo mogli da koristimo prevode
+  const FEATURES = [
+    { icon: Users, label: t.hero.features.capacity },
+    { icon: Waves, label: t.hero.features.pool },
+    { icon: Wifi, label: t.hero.features.wifi },
+  ];
 
   // Smena slika na svakih 4 sekunde sa automatskim ponavljanjem
   useEffect(() => {
@@ -56,19 +61,19 @@ export default function Home() {
           {/* Tagline / Badge */}
           <div className="inline-flex items-center gap-2 rounded-full bg-[#C19A5B]/20 border border-[#C19A5B]/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#C19A5B] backdrop-blur-md mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-[#C19A5B] animate-pulse" />
-            Ekskluzivna Vikendica za Odmor
+            {t.hero.badge}
           </div>
 
           {/* Glavni Naslov */}
           <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] tracking-tight text-[#F5EFE6] mb-6">
-            Dobrodošli u <br />
-            <span className="italic font-light text-[#C19A5B]">Vista Nova</span> Oazu
+            {t.hero.title} <br />
+            <span className="italic font-light text-[#C19A5B]">Vista Novi</span>
+            {activeLang === 'SRB' ? ' Oazu' : ' Oasis'}
           </h1>
 
           {/* Podnaslov */}
           <p className="text-base sm:text-lg text-[#F5EFE6]/80 font-light max-w-xl leading-relaxed mb-8">
-            Pronađite savršen mir i pobegnite od gradske gužve. Iskusite vrhunski komfor, 
-            privatnost i prelep pogled u srcu netaknute prirode.
+            {t.hero.subtitle}
           </p>
 
           {/* Akciona Dugmad */}
@@ -78,7 +83,7 @@ export default function Home() {
               className="group flex items-center justify-center gap-3 rounded-full bg-[#C19A5B] px-8 py-4 text-base font-bold text-[#1F3325] shadow-xl shadow-[#C19A5B]/20 transition-all duration-300 hover:bg-[#d3ac6c] hover:-translate-y-1"
             >
               <Calendar size={18} />
-              Rezerviši Smeštaj
+              {t.hero.bookBtn}
             </Link>
 
             <Link
@@ -86,7 +91,7 @@ export default function Home() {
               className="group flex items-center justify-center gap-2 rounded-full border border-[#F5EFE6]/30 bg-[#F5EFE6]/10 px-8 py-4 text-base font-medium text-[#F5EFE6] backdrop-blur-md transition-all duration-300 hover:bg-[#F5EFE6]/20 hover:border-[#F5EFE6]"
             >
               <ImageIcon size={18} />
-              Pogledaj Galeriju
+              {t.hero.galleryBtn}
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
@@ -97,8 +102,8 @@ export default function Home() {
           
           {/* Karakteristike */}
           <div className="flex flex-wrap items-center gap-6 sm:gap-8">
-            {FEATURES.map((item) => (
-              <div key={item.label} className="flex items-center gap-2.5 text-[#F5EFE6]/90 text-sm font-medium">
+            {FEATURES.map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2.5 text-[#F5EFE6]/90 text-sm font-medium">
                 <item.icon size={18} className="text-[#C19A5B]" />
                 <span>{item.label}</span>
               </div>

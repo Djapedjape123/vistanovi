@@ -2,19 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone } from 'lucide-react';
-
-const navLinks = [
-  { href: '/', label: 'Početna' },
-  { href: '/galerija', label: 'Galerija' },
-  { href: '/smestaj', label: 'O vikendici' },
-  { href: '/okolina', label: 'Okolina' },
-  { href: '/kontakt', label: 'Kontakt' },
-];
+import { Menu, X } from 'lucide-react';
+import { useLanguage } from '@/components/LanguageContext'; // Proveri da li ti je ovde tačna putanja
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Povezujemo se sa Context-om umesto lokalnog state-a
+  const { activeLang, setActiveLang, t } = useLanguage();
+
+  // Prebačeno unutar komponente kako bi t.nav radio
+  const navLinks = [
+    { href: '/', label: t.nav.home },
+    { href: '/galerija', label: t.nav.gallery },
+    { href: '/smestaj', label: t.nav.about },
+    { href: '/okolina', label: t.nav.surroundings },
+    { href: '/kontakt', label: t.nav.contact },
+  ];
 
   // Praćenje skrola za promenu pozadine navbara
   useEffect(() => {
@@ -68,20 +73,37 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
+        {/* Desktop CTA & Jezici */}
         <div className="hidden items-center gap-6 md:flex">
-          <a
-            href="tel:+381600000000"
-            className="flex items-center gap-2 text-sm font-medium text-[#F5EFE6]/80 transition-colors hover:text-[#C19A5B]"
-          >
-            <Phone size={16} />
-            +381 60 000 0000
-          </a>
+          
+          {/* Birač Jezika (Desktop) */}
+          <div className="flex items-center gap-2 text-sm font-semibold tracking-wider">
+            <button
+              onClick={() => setActiveLang('SRB')}
+              className={`transition-colors duration-300 ${
+                activeLang === 'SRB' ? 'text-[#C19A5B]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]'
+              }`}
+            >
+              SRB
+            </button>
+            <span className="text-[#F5EFE6]/20">|</span>
+            <button
+              onClick={() => setActiveLang('ENG')}
+              className={`transition-colors duration-300 ${
+                activeLang === 'ENG' ? 'text-[#C19A5B]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]'
+              }`}
+            >
+              ENG
+            </button>
+          </div>
+
+          <div className="h-4 w-[1px] bg-[#F5EFE6]/20" /> {/* Dekorativna linija razdvajanja */}
+
           <Link
             href="/kontakt"
             className="rounded-full bg-[#C19A5B] px-6 py-2.5 text-sm font-bold text-[#1F3325] shadow-lg shadow-[#C19A5B]/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#d3ac6c] hover:shadow-[#C19A5B]/40"
           >
-            Rezerviši
+            {t.nav.book}
           </Link>
         </div>
 
@@ -126,16 +148,29 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(false)}
             className="rounded-full bg-[#C19A5B] px-10 py-3.5 text-lg font-bold text-[#1F3325] shadow-lg shadow-[#C19A5B]/20 transition-transform active:scale-95"
           >
-            Rezerviši sada
+            {t.nav.bookNow}
           </Link>
 
-          <a
-            href="tel:+381600000000"
-            className="flex items-center gap-2 text-[#F5EFE6]/70 transition-colors hover:text-[#C19A5B]"
-          >
-            <Phone size={18} />
-            +381 60 000 0000
-          </a>
+          {/* Birač Jezika (Mobile) */}
+          <div className="mt-4 flex items-center gap-4 text-base font-semibold tracking-wider">
+            <button
+              onClick={() => setActiveLang('SRB')}
+              className={`transition-colors duration-300 ${
+                activeLang === 'SRB' ? 'text-[#C19A5B]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]'
+              }`}
+            >
+              SRB
+            </button>
+            <span className="text-[#F5EFE6]/20">|</span>
+            <button
+              onClick={() => setActiveLang('ENG')}
+              className={`transition-colors duration-300 ${
+                activeLang === 'ENG' ? 'text-[#C19A5B]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]'
+              }`}
+            >
+              ENG
+            </button>
+          </div>
         </div>
       </div>
     </header>
