@@ -18,11 +18,22 @@ export const translations = {
       bookBtn: 'Rezerviši Smeštaj',
       galleryBtn: 'Istraži Galeriju',
       features: {
-        capacity: 'Kapacitet do 8 osoba',
+        capacity: 'Kapacitet do 6 osoba',
         pool: 'Privatni bazen (slana voda)',
         wifi: 'Brzi Optički WiFi'
       }
-    }
+    },
+    contactSection: {
+      title: 'Kako do nas',
+      subtitle: 'Posetite našu oazu mira na Fruškoj gori i doživite odmor za pamćenje.',
+      phone: 'Telefon',
+      phoneVal: '+381 64 582 4612',
+      address: 'Lokacija',
+      addressVal: 'Ledinci Fruška Gora, Srbija',
+      email: 'Email adresa',
+      emailVal: 'emilijagolubov@gmail.com',
+      directionsBtn: 'Kreni do nas',
+    },
   },
   ENG: {
     nav: {
@@ -41,10 +52,21 @@ export const translations = {
       bookBtn: 'Book Accommodation',
       galleryBtn: 'Explore Gallery',
       features: {
-        capacity: 'Capacity up to 8 guests',
+        capacity: 'Capacity up to 6 guests',
         pool: 'Private pool (salt water)',
         wifi: 'Fast Fiber WiFi'
       }
+    },
+    contactSection: {
+      title: 'How to Reach Us',
+      subtitle: 'Visit our oasis of peace on Fruška Gora and experience an unforgettable vacation.',
+      phone: 'Phone',
+      phoneVal: '+381 64 582 4612',
+      address: 'Location',
+      addressVal: 'Ledinci Fruška Gora, Serbia',
+      email: 'Email Address',
+      emailVal: 'emilijagolubov@gmail.com',
+      directionsBtn: 'Get Directions',
     }
   }
 };
