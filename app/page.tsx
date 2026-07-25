@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Image as ImageIcon, Calendar, ArrowRight, Users, Wifi, Waves } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageContext';
 import KakoDoNas from '@/components/KakoDoNas';
+import WeatherWidget from '@/components/WeatherWidget';
+import ForecastSection from '@/components/ForecastSection';
 
 // Zamenite ove linkove sa vašim direktnim Cloud linkovima slika
 const HERO_IMAGES = [
@@ -58,6 +60,7 @@ export default function Home() {
           {/* Gradijent preko slika za bolju čitljivost teksta i stapanje sa sajtom */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#1F3325] via-[#1F3325]/50 to-[#1F3325]/70" />
         </div>
+        <WeatherWidget />
 
         {/* Hero Sadržaj */}
         <section className="relative z-10 flex min-h-screen flex-col justify-between px-6 pt-32 pb-12 mx-auto max-w-6xl">
@@ -77,9 +80,9 @@ export default function Home() {
             </h1>
 
             {/* Podnaslov */}
-            <p className="text-base sm:text-lg text-[#F5EFE6]/80 font-light max-w-xl leading-relaxed mb-8">
+            {/* <p className="text-base sm:text-lg text-[#F5EFE6]/80 font-light max-w-xl leading-relaxed mb-8">
               {t.hero.subtitle}
-            </p>
+            </p> */}
 
             {/* Akciona Dugmad */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
@@ -137,6 +140,8 @@ export default function Home() {
 
       {/* 2. OSTALE SEKCIJE */}
       <KakoDoNas />
+      <ForecastSection />
+      
 
     </main>
   );
