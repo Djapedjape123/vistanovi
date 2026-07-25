@@ -33,6 +33,7 @@ export default function KakoDoNas() {
       window.open(url, '_blank');
     }
   };
+  
 
   return (
     <section className="relative bg-[#1F3325] py-24 px-6 text-[#F5EFE6]">
