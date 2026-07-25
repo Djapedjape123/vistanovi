@@ -31,8 +31,8 @@ export const galleryItems: GalleryItem[] = [
   { id: 6, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784992184/WhatsApp_Image_2026-07-20_at_12.24.57_1_ubg4mu.jpg', category: 'Bazen', isHero: true },
   { id: 7, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784992173/WhatsApp_Image_2026-07-20_at_12.24.57_2_fgtusu.jpg', category: 'Bazen' },
   { id: 8, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784992129/WhatsApp_Image_2026-07-20_at_12.23.04_2_siuslx.jpg', category: 'Bazen' },
-  { id: 9, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784991859/WhatsApp_Image_2026-07-20_at_12.23.04_3_q98yht.jpg', category: 'Bazen' },
-  { id: 10, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784991847/WhatsApp_Image_2026-07-20_at_12.23.04_2_odplsd.jpg', category: 'Bazen' },
+//   { id: 9, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784991859/WhatsApp_Image_2026-07-20_at_12.23.04_3_q98yht.jpg', category: 'Bazen' },
+//   { id: 10, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784991847/WhatsApp_Image_2026-07-20_at_12.23.04_2_odplsd.jpg', category: 'Bazen' },
 
   // 11-19 Enterijer
   { id: 11, url: 'https://res.cloudinary.com/duomot4hp/image/upload/v1784991722/WhatsApp_Image_2026-07-20_at_12.23.02_kjui5m.jpg', category: 'Enterijer', isHero: true },

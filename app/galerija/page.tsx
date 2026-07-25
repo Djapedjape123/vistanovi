@@ -102,8 +102,8 @@ export default function GalerijaPage() {
                                 setVisibleCount(12);
                             }}
                             className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === cat
-                                    ? 'bg-[#C19A5B] text-[#1F3325] shadow-lg shadow-[#C19A5B]/20'
-                                    : 'bg-white/5 text-[#F5EFE6]/70 border border-white/10 hover:bg-white/10 hover:text-[#F5EFE6]'
+                                ? 'bg-[#C19A5B] text-[#1F3325] shadow-lg shadow-[#C19A5B]/20'
+                                : 'bg-white/5 text-[#F5EFE6]/70 border border-white/10 hover:bg-white/10 hover:text-[#F5EFE6]'
                                 }`}
                         >
                             {cat}
@@ -186,26 +186,23 @@ export default function GalerijaPage() {
                         </button>
 
                         {/* Glavna uvećana slika */}
+                        {/* Glavna uvećana slika */}
                         <div
-                            className="relative w-full max-w-6xl h-[60vh] sm:h-[75vh] md:h-[85vh] mx-0 sm:mx-4"
-                            // Omogućava klik na samu sliku za prelazak na sledeću (odlično za mobilne telefone)
+                            className="relative w-full max-w-6xl h-[55vh] sm:h-[75vh] md:h-[85vh] mx-auto px-4 sm:px-6"
                             onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => (prev! + 1) % filteredImages.length); }}
                         >
                             <img
                                 src={filteredImages[lightboxIndex].url}
                                 alt={filteredImages[lightboxIndex].title}
-
-                                className="object-contain animate-in zoom-in-95 duration-300"
-                                sizes="100vw"
-
+                                className="w-full h-full object-contain rounded-lg animate-in zoom-in-95 duration-300"
                             />
 
                             {/* Opis slike u dnu ekrana */}
-                            <div className="absolute -bottom-16 sm:bottom-4 left-1/2 -translate-x-1/2 text-center bg-black/60 px-6 py-2 md:py-3 rounded-full backdrop-blur-md w-[90%] sm:w-auto">
+                            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 text-center bg-black/60 px-6 py-2 md:py-3 rounded-full backdrop-blur-md w-[90%] sm:w-auto max-w-[95vw]">
                                 <span className="text-[#C19A5B] text-[10px] md:text-xs uppercase tracking-widest font-bold block mb-0.5">
                                     {filteredImages[lightboxIndex].category}
                                 </span>
-                                <span className="text-white font-serif text-sm md:text-base">
+                                <span className="text-white font-serif text-sm md:text-base line-clamp-1">
                                     {filteredImages[lightboxIndex].title}
                                 </span>
                             </div>
