@@ -145,51 +145,8 @@ export default function OkolinaPage() {
           ))}
         </div>
 
-        {/* --- 5. PREDLOG ITINERERA (Perfect Day) --- */}
-        <div className="relative rounded-3xl border border-[#C19A5B]/30 bg-[#C19A5B]/5 overflow-hidden p-8 md:p-12 animate-in fade-in duration-700">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=1920')] opacity-5 bg-cover bg-center mix-blend-overlay" />
-          
-          <div className="relative z-10 text-center mb-10">
-            <h2 className="font-serif text-3xl sm:text-4xl text-[#C19A5B] mb-4">
-              {t.okolinaPage?.perfectDayTitle || 'Naš predlog za savršen dan'}
-            </h2>
-            <p className="text-[#F5EFE6]/70 max-w-xl mx-auto">
-              {t.okolinaPage?.perfectDaySubtitle || 'Iskusite najbolje što Ledinci i Fruška gora nude...'}
-            </p>
-          </div>
-
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[#1F3325]/80 border border-white/10 backdrop-blur-md">
-              <div className="w-16 h-16 rounded-full bg-[#C19A5B]/20 flex items-center justify-center text-[#C19A5B] mb-6">
-                <Sun size={32} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3">{t.okolinaPage?.morning || 'Pre podne'}</h4>
-              <p className="text-sm text-[#F5EFE6]/70">
-                {t.okolinaPage?.morningDesc}
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[#1F3325]/80 border border-white/10 backdrop-blur-md">
-              <div className="w-16 h-16 rounded-full bg-[#C19A5B]/20 flex items-center justify-center text-[#C19A5B] mb-6">
-                <Coffee size={32} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3">{t.okolinaPage?.afternoon || 'Posle podne'}</h4>
-              <p className="text-sm text-[#F5EFE6]/70">
-                {t.okolinaPage?.afternoonDesc}
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[#1F3325]/80 border border-white/10 backdrop-blur-md">
-              <div className="w-16 h-16 rounded-full bg-[#C19A5B]/20 flex items-center justify-center text-[#C19A5B] mb-6">
-                <Moon size={32} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3">{t.okolinaPage?.evening || 'Veče'}</h4>
-              <p className="text-sm text-[#F5EFE6]/70">
-                {t.okolinaPage?.eveningDesc}
-              </p>
-            </div>
-          </div>
-        </div>
+       
+       
 
       </div>
     </main>
