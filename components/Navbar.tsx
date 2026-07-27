@@ -55,7 +55,7 @@ export default function Navbar() {
           className="relative z-50 flex items-center gap-2 font-serif text-2xl font-semibold tracking-tight text-[#F5EFE6]"
         >
           <span className="text-[#C19A5B]">Vista</span>
-          Nova
+          Novi
         </Link>
 
         {/* Desktop nav */}

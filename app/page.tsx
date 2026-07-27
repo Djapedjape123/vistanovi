@@ -75,7 +75,7 @@ export default function Home() {
             {/* Glavni Naslov */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] tracking-tight text-[#F5EFE6] mb-6">
               {t.hero.title} <br />
-              <span className="italic font-light text-[#C19A5B]">Vista Nova</span>
+              <span className="italic font-light text-[#C19A5B]">Vista Novi</span>
               {activeLang === 'SRB' ? ' Oazu' : ' Oasis'}
             </h1>
 
