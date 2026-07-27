@@ -49,7 +49,58 @@ export const translations = {
       evening: 'Veče',
       eveningDesc: 'Povratak u Vista Novu. Opuštanje u bazenu uz čašu vina, posmatrajući magičan zalazak sunca.',
       mapBtn: 'Prikaži na mapi'
-    }
+    },
+    about: {
+      eyebrow: 'O vikendici', // ENG: 'About the house'
+      title: 'Vista Novi',
+      subtitle: 'Vaš mir iznad svakodnevice',
+      intro:
+        'Mesto gde vreme usporava, a priroda preuzima glavnu ulogu. Okružena zelenilom i prelepim pogledom, ova vikendica pruža savršen beg od gradske gužve i idealna je za parove, vikend odmor ili opuštanje sa najbližima.',
+
+      features: {
+        pool: {
+          title: 'Jutra uz kafu i izlazak sunca',
+          text: 'Uživajte u privatnom bazenu i mirnim jutrima gde jedini zvuk koji čujete je priroda oko vas.',
+        },
+        evening: {
+          title: 'Večeri pod zvezdama',
+          text: 'Tišina koju prekidaju samo zvuci prirode - savršeno za opuštanje posle dugog dana.',
+        },
+        interior: {
+          title: 'Topao i moderan enterijer',
+          text: 'Sve što vam je potrebno za udoban boravak i potpuni odmor, u prostoru osmišljenom da se osećate kao kod kuće.',
+        },
+      },
+
+      forWho: {
+        title: 'Za koga je Vista Novi',
+        idealTitle: 'Idealno za',
+        idealItems: [
+          'Parove',
+          'Vikend odmor',
+          'Opuštanje sa najbližima',
+          'Goste koji cene mir i prirodu',
+        ],
+        notTitle: 'Nije namenjeno za',
+        notItems: [
+          'Žurke i glasna okupljanja',
+          'Velike proslave',
+          'Grupe koje traže "provod"',
+        ],
+      },
+
+      quote:
+        'Dođite da usporite, udahnete punim plućima i uživate u pogledu koji se pamti.',
+
+      languages: {
+        label: 'Komunikacija na oba jezika, bez brige oko sporazumevanja',
+      },
+
+      cta: {
+        title: 'Spremni da usporite?',
+        button: 'Rezerviši svoj boravak',
+      },
+    },
   },
   ENG: {
     nav: {
@@ -99,8 +150,60 @@ export const translations = {
       evening: 'Evening',
       eveningDesc: 'Return to Vista Nova. Relax in the pool with a glass of wine, watching the magical sunset.',
       mapBtn: 'Show on map'
-    }
-  }
+    },
+    about: {
+    eyebrow: 'About the house',
+    title: 'Vista Novi',
+    subtitle: 'Your peace above everyday life',
+    intro:
+      'A place where time slows down and nature takes the lead role. Surrounded by greenery and a beautiful view, this house offers a perfect escape from the city rush and is ideal for couples, weekend getaways, or relaxing with your closest ones.',
+
+    features: {
+      pool: {
+        title: 'Mornings with coffee and sunrise',
+        text: 'Enjoy the private pool and peaceful mornings where the only sound you hear is nature around you.',
+      },
+      evening: {
+        title: 'Evenings under the stars',
+        text: 'Silence broken only by the sounds of nature - perfect for unwinding after a long day.',
+      },
+      interior: {
+        title: 'Warm and modern interior',
+        text: 'Everything you need for a comfortable stay and complete relaxation, in a space designed to feel like home.',
+      },
+    },
+
+    forWho: {
+      title: 'Who Vista Novi is for',
+      idealTitle: 'Ideal for',
+      idealItems: [
+        'Couples',
+        'Weekend getaways',
+        'Relaxing with loved ones',
+        'Guests who value peace and nature',
+      ],
+      notTitle: 'Not intended for',
+      notItems: [
+        'Parties and loud gatherings',
+        'Large celebrations',
+        'Groups looking for a "party" scene',
+      ],
+    },
+
+    quote:
+      'Come to slow down, breathe deeply, and enjoy a view you\'ll remember.',
+
+    languages: {
+      label: 'Communication in both languages, no worries about understanding each other',
+    },
+
+    cta: {
+      title: 'Ready to slow down?',
+      button: 'Book your stay',
+    },
+  },
+  },
+  
 };
 
 export type Language = 'SRB' | 'ENG';
