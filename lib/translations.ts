@@ -34,6 +34,22 @@ export const translations = {
       emailVal: 'emilijagolubov@gmail.com',
       directionsBtn: 'Kreni do nas',
     },
+    // NOVO: Tekstovi za stranicu Okolina
+    okolinaPage: {
+      badge: 'Istražite okolinu',
+      title: 'Otkrijte čari',
+      titleHighlight: 'Fruške gore',
+      subtitle: 'Smeštena u srcu prirode, a ipak tako blizu grada. Naša vikendica u Ledincima je savršena polazna tačka za vaše avanture.',
+      perfectDayTitle: 'Naš predlog za savršen dan',
+      perfectDaySubtitle: 'Iskusite najbolje što Ledinci i Fruška gora nude kroz idealno izbalansiran plan za opuštanje i uživanje.',
+      morning: 'Pre podne',
+      morningDesc: 'Jutarnja kafa na terasi uz cvrkut ptica, pa osvežavajuća šetnja šumskim stazama do Popovice.',
+      afternoon: 'Posle podne',
+      afternoonDesc: 'Lokalni ručak i degustacija vrhunskih fruškogorskih vina u obližnjoj porodičnoj vinariji.',
+      evening: 'Veče',
+      eveningDesc: 'Povratak u Vista Novu. Opuštanje u bazenu uz čašu vina, posmatrajući magičan zalazak sunca.',
+      mapBtn: 'Prikaži na mapi'
+    }
   },
   ENG: {
     nav: {
@@ -67,6 +83,22 @@ export const translations = {
       email: 'Email Address',
       emailVal: 'emilijagolubov@gmail.com',
       directionsBtn: 'Get Directions',
+    },
+    // NOVO: Tekstovi za stranicu Okolina (Engleski)
+    okolinaPage: {
+      badge: 'Explore Surroundings',
+      title: 'Discover the charm of',
+      titleHighlight: 'Fruška Gora',
+      subtitle: 'Nestled in the heart of nature, yet so close to the city. Our villa in Ledinci is the perfect starting point for your adventures.',
+      perfectDayTitle: 'Our suggestion for a perfect day',
+      perfectDaySubtitle: 'Experience the best of Ledinci and Fruška Gora through an ideally balanced plan for relaxation and enjoyment.',
+      morning: 'Morning',
+      morningDesc: 'Morning coffee on the terrace with birdsong, followed by a refreshing walk along the forest trails to Popovica.',
+      afternoon: 'Afternoon',
+      afternoonDesc: 'Local lunch and tasting of premium Fruška Gora wines at a nearby family winery.',
+      evening: 'Evening',
+      eveningDesc: 'Return to Vista Nova. Relax in the pool with a glass of wine, watching the magical sunset.',
+      mapBtn: 'Show on map'
     }
   }
 };
