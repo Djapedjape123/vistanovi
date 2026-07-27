@@ -144,7 +144,7 @@ export default function Navbar() {
 
         <div className="mt-12 flex flex-col items-center gap-6">
           <Link
-            href="/kontakt"
+            href="/rezervacije"
             onClick={() => setIsMobileMenuOpen(false)}
             className="rounded-full bg-[#C19A5B] px-10 py-3.5 text-lg font-bold text-[#1F3325] shadow-lg shadow-[#C19A5B]/20 transition-transform active:scale-95"
           >
