@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import { LanguageProvider } from '@/components/LanguageContext';
 import SplashScreen from "@/components/SplashScreen";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Footer from "@/components/Footer";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +41,7 @@ export default function RootLayout({
           <SplashScreen/>
           {children}
           <WhatsAppButton/>
+          <Footer/>
         </LanguageProvider>
       </body>
 
