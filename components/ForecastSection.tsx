@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { getWeatherInfo } from '@/lib/weatherCodes';
+// Uvozimo tvoj LanguageContext (proveri da li ti je putanja u lib ili components folderu)
+import { useLanguage } from '@/components/LanguageContext'; 
 
 interface ForecastDay {
   date: string;
@@ -11,6 +13,7 @@ interface ForecastDay {
 }
 
 export default function ForecastSection() {
+  const { activeLang, t } = useLanguage(); // Povlačimo aktivni jezik i prevode
   const [forecast, setForecast] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,10 +28,14 @@ export default function ForecastSection() {
   }, []);
 
   const formatDayLabel = (dateStr: string, index: number) => {
-    if (index === 0) return 'Danas';
-    if (index === 1) return 'Sutra';
+    // Koristimo prevode iz contexta za "Danas" i "Sutra"
+    if (index === 0) return t.weather?.today || 'Danas';
+    if (index === 1) return t.weather?.tomorrow || 'Sutra';
+    
+    // Formatiramo dan na osnovu izabranog jezika
     const date = new Date(dateStr);
-    return date.toLocaleDateString('sr-RS', { weekday: 'short' });
+    const locale = activeLang === 'ENG' ? 'en-US' : 'sr-RS';
+    return date.toLocaleDateString(locale, { weekday: 'short' });
   };
 
   return (
@@ -36,10 +43,10 @@ export default function ForecastSection() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-8 text-center">
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#C19A5B]">
-            Planiraj svoju posetu
+            {t.weather?.subtitle || 'Planiraj svoju posetu'}
           </p>
           <h2 className="font-serif text-3xl text-[#F5EFE6] md:text-4xl">
-            Vreme na Fruškoj gori
+            {t.weather?.title || 'Vreme na Fruškoj gori'}
           </h2>
         </div>
 

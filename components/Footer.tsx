@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageContext';
 
@@ -11,24 +10,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        // mt-32 dodaje prostor iznad footera kako bi okrugla slika imala mesta da "izviri"
-        <footer className="relative  bg-black text-[#F5EFE6] pt-24 pb-8 border-t border-[#C19A5B]/20">
-
-
-            
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-8 border-[#15241A] overflow-hidden group shadow-2xl">
-                    {/* Zlatni prsten */}
-                    <div className="absolute inset-0 rounded-full border-2 border-[#C19A5B] z-20 pointer-events-none transition-transform duration-700 group-hover:scale-95" />
-
-                    <img
-                        src="https://res.cloudinary.com/duomot4hp/image/upload/v1785149684/ChatGPT_Image_27._%D1%98%D1%83%D0%BB_2026._13_03_26_z5djuf.png"
-                        alt="Vista Nova Footer"
-                        className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
-                    />
-                </div>
-            </div>
-
+        <footer className="relative bg-black text-[#F5EFE6] pt-16 pb-8 border-t border-[#C19A5B]/20">
             <div className="mx-auto max-w-7xl px-6">
 
                 {/* 2. GLAVNE KOLONE */}
@@ -36,16 +18,32 @@ export default function Footer() {
 
                     {/* LEVA KOLONA: Brend */}
                     <div className="flex flex-col items-center md:items-start">
-                        <h3 className="font-serif text-3xl text-[#C19A5B] mb-4">Vista Nova</h3>
+                        
+                        {/* Logo iznad naslova sa pulsirajućim efektom */}
+                        <div className="relative mb-6 flex justify-center md:justify-start">
+                            {/* Pulsirajući radarski prsten iza slike */}
+                            <div className="absolute inset-0 rounded-full bg-[#C19A5B]/40 animate-ping opacity-75" />
+                            {/* Blagi glow efekat koji diše */}
+                            <div className="absolute inset-0 rounded-full bg-[#C19A5B]/20 blur-xl animate-pulse" />
+                            
+                            <div className="relative w-28 h-28 rounded-full border-4 border-black overflow-hidden group shadow-2xl bg-black z-10">
+                                {/* Zlatni prsten */}
+                                <div className="absolute inset-0 rounded-full border-2 border-[#C19A5B] z-20 pointer-events-none transition-transform duration-700 group-hover:scale-95" />
+
+                                <img
+                                    src="https://res.cloudinary.com/duomot4hp/image/upload/v1785149684/ChatGPT_Image_27._%D1%98%D1%83%D0%BB_2026._13_03_26_z5djuf.png"
+                                    alt="Vista Novi Footer"
+                                    className="w-full h-full object-contain object-center p-1 transition-transform duration-700 group-hover:scale-110"
+                                />
+                            </div>
+                        </div>
+
+                        <h3 className="font-serif text-3xl text-[#C19A5B] mb-4">Vista Novi</h3>
                         <p className="text-[#F5EFE6]/70 max-w-xs leading-relaxed">
                             {activeLang === 'SRB'
                                 ? 'Vaša privatna oaza mira u srcu netaknute prirode Fruške gore. Mesto gde se luksuz i priroda spajaju.'
                                 : 'Your private oasis of peace in the heart of untouched nature on Fruška Gora. Where luxury meets nature.'}
                         </p>
-                        {/* Opciono: Social ikonica */}
-                        {/* <a href="#" className="mt-6 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#C19A5B] hover:border-[#C19A5B] transition-all">
-              <Instagram size={18} />
-            </a> */}
                     </div>
 
                     {/* SREDNJA KOLONA: Navigacija */}
@@ -85,14 +83,14 @@ export default function Footer() {
                         </a>
 
                         <div className="space-y-3 text-[#F5EFE6]/70 text-sm">
-                            <p className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
+                            <a href='mailto:emilijagolubov@gmail.com' className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
                                 <Mail size={18} className="text-[#C19A5B]" />
                                 {t.contactSection.emailVal}
-                            </p>
-                            <p className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
+                            </a>
+                            <a href='https://www.google.com/maps/place/NEMA+DALJE/@45.2091999,19.8163856,495m/data=!3m2!1e3!4b1!4m6!3m5!1s0x475b0f003133a14f:0x8a27fdfd1f8f041d!8m2!3d45.2091999!4d19.8163856!16s%2Fg%2F11y5c274wm!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDcyNi4wIKXMDSoASAFQAw%3D%3D' className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
                                 <MapPin size={18} className="text-[#C19A5B]" />
                                 {t.contactSection.addressVal}
-                            </p>
+                            </a>
                         </div>
                     </div>
 
@@ -101,9 +99,8 @@ export default function Footer() {
                 {/* 3. DONJA TRAKA (Copyright i Potpis) */}
                 <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-[#F5EFE6]/50">
                     <p>
-                        © {currentYear} Vista Nova. {activeLang === 'SRB' ? 'Sva prava zadržana.' : 'All rights reserved.'}
+                        © {currentYear} Vista Novi. {activeLang === 'SRB' ? 'Sva prava zadržana.' : 'All rights reserved.'}
                     </p>
-                    
                 </div>
 
             </div>

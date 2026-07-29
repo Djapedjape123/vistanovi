@@ -143,7 +143,13 @@ export const translations = {
         backHomeBtn: 'Vrati se na početnu',
         whatsappBtn: 'Pišite nam na WhatsApp'
       }
-    }
+    },
+    weather: {
+      subtitle: 'Planiraj svoju posetu',
+      title: 'Vreme na Fruškoj gori',
+      today: 'Danas',
+      tomorrow: 'Sutra'
+    },
   },
   ENG: {
     nav: {
@@ -166,6 +172,12 @@ export const translations = {
         pool: 'Private pool (salt water)',
         wifi: 'Fast Fiber WiFi'
       }
+    },
+    weather: {
+      subtitle: 'Plan your visit',
+      title: 'Weather on Fruška Gora',
+      today: 'Today',
+      tomorrow: 'Tomorrow'
     },
     contactSection: {
       title: 'How to Reach Us',
