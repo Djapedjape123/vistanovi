@@ -5,18 +5,20 @@ import Link from 'next/link';
 import { ArrowLeft, Users, Check, Dog, Loader2, CheckCircle2 } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { differenceInDays, format } from 'date-fns';
-import { srLatn } from 'date-fns/locale';
-import { DatePicker } from '@/components/DatePicker'; // Importujemo naš novi kalendar
+import { srLatn, enUS } from 'date-fns/locale';
+import { DatePicker } from '@/components/DatePicker';
+import { useLanguage } from '@/components/LanguageContext'; // Dodato preuzimanje jezika
 
 export default function RezervacijaPage() {
+  const { activeLang, t } = useLanguage();
+  const currentLocale = activeLang === 'ENG' ? enUS : srLatn;
+
   const [step, setStep] = useState(1);
   const [nights, setNights] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // State za Kalendar (koristi Date objekte umesto stringova)
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-  // Glavni State za ostale podatke
   const [formData, setFormData] = useState({
     guests: 2,
     hasPets: false,
@@ -32,14 +34,12 @@ export default function RezervacijaPage() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  // Prava logika za računanje noćenja pomoću date-fns
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
-      // Razlika u danima između check-out i check-in
       const calculatedNights = differenceInDays(dateRange.to, dateRange.from);
       setNights(calculatedNights);
     } else {
-      setNights(0); // Resetuj ako nije izabran ceo opseg
+      setNights(0); 
     }
   }, [dateRange]);
 
@@ -47,10 +47,8 @@ export default function RezervacijaPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Priprema podataka za slanje
     const dataToSend = {
       ...formData,
-      // Formatiramo datume za slanje (npr. "15.08.2026")
       checkIn: dateRange?.from ? format(dateRange.from, 'dd.MM.yyyy') : '',
       checkOut: dateRange?.to ? format(dateRange.to, 'dd.MM.yyyy') : '',
       nights,
@@ -74,10 +72,10 @@ export default function RezervacijaPage() {
             <div className="mb-8 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-2 text-[#F5EFE6]/70 hover:text-[#C19A5B] transition-colors">
                 <ArrowLeft size={20} />
-                Nazad na početnu
+                {t.booking.backHome}
               </Link>
               <div className="text-sm font-semibold tracking-wider text-[#C19A5B]">
-                KORAK {step} OD 3
+                {t.booking.step} {step} {t.booking.of} 3
               </div>
             </div>
 
@@ -93,31 +91,31 @@ export default function RezervacijaPage() {
         {/* --- KORAK 1: KALENDAR I CENA --- */}
         {step === 1 && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="font-serif text-3xl sm:text-4xl mb-2">Kada planirate dolazak?</h1>
-            <p className="text-[#F5EFE6]/70 mb-8">Izaberite slobodne datume (Cena: 150€ / noć)</p>
+            <h1 className="font-serif text-3xl sm:text-4xl mb-2">{t.booking.step1.title}</h1>
+            <p className="text-[#F5EFE6]/70 mb-8">{t.booking.step1.subtitle}</p>
             
-            {/* Ubacujemo našu DatePicker komponentu */}
             <div className="mb-8">
               <DatePicker date={dateRange} setDate={setDateRange} />
             </div>
 
-            {/* Prikaz sume i dugme (pojavljuje se samo kad su izabrana minimum 1 noć) */}
             {nights > 0 ? (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-[#C19A5B]/10 border border-[#C19A5B]/30 mb-8 animate-in slide-in-from-bottom-2 fade-in">
                 <div className="text-center sm:text-left">
                   <div className="text-[#F5EFE6]/80 text-sm">
-                    {format(dateRange!.from!, 'd. MMM', { locale: srLatn })} - {format(dateRange!.to!, 'd. MMM yyyy', { locale: srLatn })}
+                    {format(dateRange!.from!, 'd. MMM', { locale: currentLocale })} - {format(dateRange!.to!, 'd. MMM yyyy', { locale: currentLocale })}
                   </div>
-                  <div className="text-[#F5EFE6]/80 text-sm mt-1">Ukupno za {nights} {nights === 1 ? 'noćenje' : 'noćenja'}</div>
+                  <div className="text-[#F5EFE6]/80 text-sm mt-1">
+                    {t.booking.step1.totalFor} {nights} {nights === 1 ? t.booking.step1.nightSingle : t.booking.step1.nightPlural}
+                  </div>
                   <div className="font-serif text-2xl text-[#C19A5B]">{totalPrice} €</div>
                 </div>
                 <button onClick={nextStep} className="w-full sm:w-auto px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors">
-                  Potvrdi datume
+                  {t.booking.step1.confirmDates}
                 </button>
               </div>
             ) : (
                <div className="text-center text-[#F5EFE6]/50 italic">
-                 *Molimo izaberite datum dolaska i odlaska na kalendaru iznad.
+                 {t.booking.step1.pleaseSelect}
                </div>
             )}
           </div>
@@ -126,16 +124,15 @@ export default function RezervacijaPage() {
         {/* --- KORAK 2: GOSTI I LJUBIMCI --- */}
         {step === 2 && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="font-serif text-3xl sm:text-4xl mb-8">Detalji boravka</h1>
+            <h1 className="font-serif text-3xl sm:text-4xl mb-8">{t.booking.step2.title}</h1>
             
             <div className="space-y-6">
-              {/* Broj gostiju (Maksimum 6) */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-[#C19A5B]/20 text-[#C19A5B] rounded-xl"><Users size={24} /></div>
                   <div>
-                    <h3 className="font-semibold text-lg">Broj gostiju</h3>
-                    <p className="text-sm text-[#F5EFE6]/60">Maksimalno 6 osoba</p>
+                    <h3 className="font-semibold text-lg">{t.booking.step2.guests}</h3>
+                    <p className="text-sm text-[#F5EFE6]/60">{t.booking.step2.maxGuests}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 self-end sm:self-auto">
@@ -151,7 +148,6 @@ export default function RezervacijaPage() {
                 </div>
               </div>
 
-              {/* Kućni ljubimci Toggle */}
               <div 
                 onClick={() => setFormData({...formData, hasPets: !formData.hasPets})}
                 className={`cursor-pointer flex items-center justify-between rounded-2xl border p-6 transition-all duration-300 ${formData.hasPets ? 'border-[#C19A5B] bg-[#C19A5B]/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}
@@ -161,8 +157,8 @@ export default function RezervacijaPage() {
                     <Dog size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg">Dolazim sa kućnim ljubimcem</h3>
-                    <p className="text-sm text-[#F5EFE6]/60">Vaši krzneni prijatelji su dobrodošli</p>
+                    <h3 className="font-semibold text-lg">{t.booking.step2.pets}</h3>
+                    <p className="text-sm text-[#F5EFE6]/60">{t.booking.step2.petsDesc}</p>
                   </div>
                 </div>
                 <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${formData.hasPets ? 'border-[#C19A5B] bg-[#C19A5B]' : 'border-white/30'}`}>
@@ -172,8 +168,12 @@ export default function RezervacijaPage() {
             </div>
 
             <div className="mt-12 flex gap-4">
-              <button onClick={prevStep} className="px-8 py-3 rounded-full border border-white/20 text-[#F5EFE6] hover:bg-white/5 transition-colors">Nazad</button>
-              <button onClick={nextStep} className="flex-1 px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors">Dalje</button>
+              <button onClick={prevStep} className="px-8 py-3 rounded-full border border-white/20 text-[#F5EFE6] hover:bg-white/5 transition-colors">
+                {t.booking.step2.backBtn}
+              </button>
+              <button onClick={nextStep} className="flex-1 px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors">
+                {t.booking.step2.nextBtn}
+              </button>
             </div>
           </div>
         )}
@@ -181,67 +181,65 @@ export default function RezervacijaPage() {
         {/* --- KORAK 3: KONTAKT I SLANJE --- */}
         {step === 3 && (
           <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="font-serif text-3xl sm:text-4xl mb-8">Vaši podaci</h1>
+            <h1 className="font-serif text-3xl sm:text-4xl mb-8">{t.booking.step3.title}</h1>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Leva kolona: Forma */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">Ime i prezime</label>
+                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.nameLabel}</label>
                   <input 
                     required
                     type="text" 
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
-                    placeholder="Unesite vaše ime"
+                    placeholder={t.booking.step3.namePlaceholder}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">Email adresa</label>
+                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.emailLabel}</label>
                   <input 
                     required
                     type="email" 
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
-                    placeholder="primer@email.com"
+                    placeholder={t.booking.step3.emailPlaceholder}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">Broj telefona</label>
+                  <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.phoneLabel}</label>
                   <input 
                     required
                     type="tel" 
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
-                    placeholder="+381 60 123 4567"
+                    placeholder={t.booking.step3.phonePlaceholder}
                   />
                 </div>
               </div>
 
-              {/* Desna kolona: Račun (Summary) */}
               <div className="rounded-2xl border border-[#C19A5B]/30 bg-[#C19A5B]/10 p-6 h-fit">
-                <h3 className="font-serif text-xl text-[#C19A5B] mb-4">Pregled rezervacije</h3>
+                <h3 className="font-serif text-xl text-[#C19A5B] mb-4">{t.booking.step3.summaryTitle}</h3>
                 
                 <div className="space-y-3 text-sm text-[#F5EFE6]/80 mb-6">
                   <div className="flex justify-between">
-                    <span>Noćenja:</span>
-                    <span className="font-medium text-[#F5EFE6]">{nights} noći</span>
+                    <span>{t.booking.step3.nightsLabel}</span>
+                    <span className="font-medium text-[#F5EFE6]">{nights} {t.booking.step3.nightsText}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Gosti:</span>
-                    <span className="font-medium text-[#F5EFE6]">{formData.guests} osobe</span>
+                    <span>{t.booking.step3.guestsLabel}</span>
+                    <span className="font-medium text-[#F5EFE6]">{formData.guests} {t.booking.step3.guestsText}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Ljubimci:</span>
-                    <span className="font-medium text-[#F5EFE6]">{formData.hasPets ? 'Da' : 'Ne'}</span>
+                    <span>{t.booking.step3.petsLabel}</span>
+                    <span className="font-medium text-[#F5EFE6]">{formData.hasPets ? t.booking.step3.yes : t.booking.step3.no}</span>
                   </div>
                 </div>
                 
                 <div className="pt-4 border-t border-[#C19A5B]/20 flex justify-between items-center">
-                  <span className="text-[#F5EFE6]">Ukupno:</span>
+                  <span className="text-[#F5EFE6]">{t.booking.step3.totalLabel}</span>
                   <span className="font-serif text-2xl font-bold text-[#C19A5B]">{totalPrice} €</span>
                 </div>
               </div>
@@ -249,7 +247,7 @@ export default function RezervacijaPage() {
 
             <div className="mt-12 flex gap-4">
               <button type="button" onClick={prevStep} disabled={isSubmitting} className="px-8 py-3 rounded-full border border-white/20 text-[#F5EFE6] hover:bg-white/5 transition-colors disabled:opacity-50">
-                Nazad
+                {t.booking.step2.backBtn}
               </button>
               <button 
                 type="submit" 
@@ -257,9 +255,9 @@ export default function RezervacijaPage() {
                 className="flex-1 flex items-center justify-center gap-2 px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors disabled:opacity-70"
               >
                 {isSubmitting ? (
-                  <><Loader2 size={20} className="animate-spin" /> Šaljemo...</>
+                  <><Loader2 size={20} className="animate-spin" /> {t.booking.step3.sending}</>
                 ) : (
-                  'Pošalji zahtev'
+                  t.booking.step3.submitBtn
                 )}
               </button>
             </div>
@@ -272,16 +270,16 @@ export default function RezervacijaPage() {
             <div className="w-24 h-24 rounded-full bg-[#C19A5B]/20 mx-auto flex items-center justify-center mb-6">
               <CheckCircle2 size={48} className="text-[#C19A5B]" />
             </div>
-            <h1 className="font-serif text-4xl mb-4">Zahtev je uspešno poslat!</h1>
+            <h1 className="font-serif text-4xl mb-4">{t.booking.step4.successTitle}</h1>
             <p className="text-[#F5EFE6]/70 max-w-md mx-auto mb-10 text-lg">
-              Hvala vam na interesovanju, {formData.name}. Vlasnik će vas kontaktirati na ostavljeni email ili telefon u najkraćem roku kako bi potvrdio rezervaciju.
+              {t.booking.step4.successDesc1} {formData.name} {t.booking.step4.successDesc2}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/" className="px-8 py-3 rounded-full border border-white/20 text-[#F5EFE6] hover:bg-white/5 transition-colors">
-                Vrati se na početnu
+                {t.booking.step4.backHomeBtn}
               </Link>
-              <a href="https://wa.me/381600000000" target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-[#25D366] text-white font-bold hover:bg-[#20bd5a] transition-colors">
-                Pišite nam na WhatsApp
+              <a href="https://wa.me/381645824612" target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-[#25D366] text-white font-bold hover:bg-[#20bd5a] transition-colors">
+                {t.booking.step4.whatsappBtn}
               </a>
             </div>
           </div>

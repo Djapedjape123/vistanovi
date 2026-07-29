@@ -34,7 +34,6 @@ export const translations = {
       emailVal: 'emilijagolubov@gmail.com',
       directionsBtn: 'Kreni do nas',
     },
-    // NOVO: Tekstovi za stranicu Okolina
     okolinaPage: {
       badge: 'Istražite okolinu',
       title: 'Otkrijte čari',
@@ -51,12 +50,10 @@ export const translations = {
       mapBtn: 'Prikaži na mapi'
     },
     about: {
-      eyebrow: 'O vikendici', // ENG: 'About the house'
+      eyebrow: 'O vikendici',
       title: 'Vista Novi',
       subtitle: 'Vaš mir iznad svakodnevice',
-      intro:
-        'Mesto gde vreme usporava, a priroda preuzima glavnu ulogu. Okružena zelenilom i prelepim pogledom, ova vikendica pruža savršen beg od gradske gužve i idealna je za parove, vikend odmor ili opuštanje sa najbližima.',
-
+      intro: 'Mesto gde vreme usporava, a priroda preuzima glavnu ulogu. Okružena zelenilom i prelepim pogledom, ova vikendica pruža savršen beg od gradske gužve i idealna je za parove, vikend odmor ili opuštanje sa najbližima.',
       features: {
         pool: {
           title: 'Jutra uz kafu i izlazak sunca',
@@ -71,7 +68,6 @@ export const translations = {
           text: 'Sve što vam je potrebno za udoban boravak i potpuni odmor, u prostoru osmišljenom da se osećate kao kod kuće.',
         },
       },
-
       forWho: {
         title: 'Za koga je Vista Novi',
         idealTitle: 'Idealno za',
@@ -88,19 +84,66 @@ export const translations = {
           'Grupe koje traže "provod"',
         ],
       },
-
-      quote:
-        'Dođite da usporite, udahnete punim plućima i uživate u pogledu koji se pamti.',
-
+      quote: 'Dođite da usporite, udahnete punim plućima i uživate u pogledu koji se pamti.',
       languages: {
         label: 'Komunikacija na oba jezika, bez brige oko sporazumevanja',
       },
-
       cta: {
         title: 'Spremni da usporite?',
         button: 'Rezerviši svoj boravak',
       },
     },
+    // NOVO: Tekstovi za stranicu Rezervacija (Srpski)
+    booking: {
+      backHome: 'Nazad na početnu',
+      step: 'KORAK',
+      of: 'OD',
+      step1: {
+        title: 'Kada planirate dolazak?',
+        subtitle: 'Izaberite slobodne datume (Cena: 150€ / noć)',
+        totalFor: 'Ukupno za',
+        nightSingle: 'noćenje',
+        nightPlural: 'noćenja',
+        confirmDates: 'Potvrdi datume',
+        pleaseSelect: '*Molimo izaberite datum dolaska i odlaska na kalendaru iznad.'
+      },
+      step2: {
+        title: 'Detalji boravka',
+        guests: 'Broj gostiju',
+        maxGuests: 'Maksimalno 6 osoba',
+        pets: 'Dolazim sa kućnim ljubimcem',
+        petsDesc: 'Vaši krzneni prijatelji su dobrodošli',
+        backBtn: 'Nazad',
+        nextBtn: 'Dalje'
+      },
+      step3: {
+        title: 'Vaši podaci',
+        nameLabel: 'Ime i prezime',
+        namePlaceholder: 'Unesite vaše ime',
+        emailLabel: 'Email adresa',
+        emailPlaceholder: 'primer@email.com',
+        phoneLabel: 'Broj telefona',
+        phonePlaceholder: '+381 60 123 4567',
+        summaryTitle: 'Pregled rezervacije',
+        nightsLabel: 'Noćenja:',
+        nightsText: 'noći',
+        guestsLabel: 'Gosti:',
+        guestsText: 'osobe',
+        petsLabel: 'Ljubimci:',
+        yes: 'Da',
+        no: 'Ne',
+        totalLabel: 'Ukupno:',
+        sending: 'Šaljemo...',
+        submitBtn: 'Pošalji zahtev'
+      },
+      step4: {
+        successTitle: 'Zahtev je uspešno poslat!',
+        successDesc1: 'Hvala vam na interesovanju, ',
+        successDesc2: '. Vlasnik će vas kontaktirati na ostavljeni email ili telefon u najkraćem roku kako bi potvrdio rezervaciju.',
+        backHomeBtn: 'Vrati se na početnu',
+        whatsappBtn: 'Pišite nam na WhatsApp'
+      }
+    }
   },
   ENG: {
     nav: {
@@ -135,7 +178,6 @@ export const translations = {
       emailVal: 'emilijagolubov@gmail.com',
       directionsBtn: 'Get Directions',
     },
-    // NOVO: Tekstovi za stranicu Okolina (Engleski)
     okolinaPage: {
       badge: 'Explore Surroundings',
       title: 'Discover the charm of',
@@ -152,58 +194,101 @@ export const translations = {
       mapBtn: 'Show on map'
     },
     about: {
-    eyebrow: 'About the house',
-    title: 'Vista Novi',
-    subtitle: 'Your peace above everyday life',
-    intro:
-      'A place where time slows down and nature takes the lead role. Surrounded by greenery and a beautiful view, this house offers a perfect escape from the city rush and is ideal for couples, weekend getaways, or relaxing with your closest ones.',
-
-    features: {
-      pool: {
-        title: 'Mornings with coffee and sunrise',
-        text: 'Enjoy the private pool and peaceful mornings where the only sound you hear is nature around you.',
+      eyebrow: 'About the house',
+      title: 'Vista Novi',
+      subtitle: 'Your peace above everyday life',
+      intro: 'A place where time slows down and nature takes the lead role. Surrounded by greenery and a beautiful view, this house offers a perfect escape from the city rush and is ideal for couples, weekend getaways, or relaxing with your closest ones.',
+      features: {
+        pool: {
+          title: 'Mornings with coffee and sunrise',
+          text: 'Enjoy the private pool and peaceful mornings where the only sound you hear is nature around you.',
+        },
+        evening: {
+          title: 'Evenings under the stars',
+          text: 'Silence broken only by the sounds of nature - perfect for unwinding after a long day.',
+        },
+        interior: {
+          title: 'Warm and modern interior',
+          text: 'Everything you need for a comfortable stay and complete relaxation, in a space designed to feel like home.',
+        },
       },
-      evening: {
-        title: 'Evenings under the stars',
-        text: 'Silence broken only by the sounds of nature - perfect for unwinding after a long day.',
+      forWho: {
+        title: 'Who Vista Novi is for',
+        idealTitle: 'Ideal for',
+        idealItems: [
+          'Couples',
+          'Weekend getaways',
+          'Relaxing with loved ones',
+          'Guests who value peace and nature',
+        ],
+        notTitle: 'Not intended for',
+        notItems: [
+          'Parties and loud gatherings',
+          'Large celebrations',
+          'Groups looking for a "party" scene',
+        ],
       },
-      interior: {
-        title: 'Warm and modern interior',
-        text: 'Everything you need for a comfortable stay and complete relaxation, in a space designed to feel like home.',
+      quote: 'Come to slow down, breathe deeply, and enjoy a view you\'ll remember.',
+      languages: {
+        label: 'Communication in both languages, no worries about understanding each other',
+      },
+      cta: {
+        title: 'Ready to slow down?',
+        button: 'Book your stay',
       },
     },
-
-    forWho: {
-      title: 'Who Vista Novi is for',
-      idealTitle: 'Ideal for',
-      idealItems: [
-        'Couples',
-        'Weekend getaways',
-        'Relaxing with loved ones',
-        'Guests who value peace and nature',
-      ],
-      notTitle: 'Not intended for',
-      notItems: [
-        'Parties and loud gatherings',
-        'Large celebrations',
-        'Groups looking for a "party" scene',
-      ],
-    },
-
-    quote:
-      'Come to slow down, breathe deeply, and enjoy a view you\'ll remember.',
-
-    languages: {
-      label: 'Communication in both languages, no worries about understanding each other',
-    },
-
-    cta: {
-      title: 'Ready to slow down?',
-      button: 'Book your stay',
-    },
+    // NOVO: Tekstovi za stranicu Rezervacija (Engleski)
+    booking: {
+      backHome: 'Back to home',
+      step: 'STEP',
+      of: 'OF',
+      step1: {
+        title: 'When are you planning to arrive?',
+        subtitle: 'Select available dates (Price: 150€ / night)',
+        totalFor: 'Total for',
+        nightSingle: 'night',
+        nightPlural: 'nights',
+        confirmDates: 'Confirm dates',
+        pleaseSelect: '*Please select check-in and check-out dates on the calendar above.'
+      },
+      step2: {
+        title: 'Stay details',
+        guests: 'Number of guests',
+        maxGuests: 'Maximum 6 people',
+        pets: 'I am coming with a pet',
+        petsDesc: 'Your furry friends are welcome',
+        backBtn: 'Back',
+        nextBtn: 'Next'
+      },
+      step3: {
+        title: 'Your details',
+        nameLabel: 'Full name',
+        namePlaceholder: 'Enter your name',
+        emailLabel: 'Email address',
+        emailPlaceholder: 'example@email.com',
+        phoneLabel: 'Phone number',
+        phonePlaceholder: '+381 60 123 4567',
+        summaryTitle: 'Booking summary',
+        nightsLabel: 'Nights:',
+        nightsText: 'nights',
+        guestsLabel: 'Guests:',
+        guestsText: 'people',
+        petsLabel: 'Pets:',
+        yes: 'Yes',
+        no: 'No',
+        totalLabel: 'Total:',
+        sending: 'Sending...',
+        submitBtn: 'Send request'
+      },
+      step4: {
+        successTitle: 'Request sent successfully!',
+        successDesc1: 'Thank you for your interest, ',
+        successDesc2: '. The owner will contact you via email or phone as soon as possible to confirm the reservation.',
+        backHomeBtn: 'Return to home',
+        whatsappBtn: 'Message us on WhatsApp'
+      }
+    }
   },
-  },
-  
 };
 
 export type Language = 'SRB' | 'ENG';
