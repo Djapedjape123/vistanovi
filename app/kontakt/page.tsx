@@ -26,7 +26,7 @@ export default function KontaktPage() {
 
     try {
       // Šaljemo podatke na naš backend api ruter
-      const res = await fetch('/api/send-contact', {
+      const res = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
