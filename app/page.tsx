@@ -72,6 +72,7 @@ export default function Home() {
               {t.hero.badge}
             </div>
 
+
             {/* Glavni Naslov */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] tracking-tight text-[#F5EFE6] mb-6">
               {t.hero.title} <br />
