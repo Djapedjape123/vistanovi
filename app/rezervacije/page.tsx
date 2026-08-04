@@ -207,6 +207,7 @@ export default function RezervacijaPage() {
                     placeholder={t.booking.step3.emailPlaceholder}
                   />
                 </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.phoneLabel}</label>
                   <input 
