@@ -83,9 +83,9 @@ export default function Footer() {
                         </a>
 
                         <div className="space-y-3 text-[#F5EFE6]/70 text-sm">
-                            <a href='mailto:emilijagolubov@gmail.com' className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
+                            <a href='mailto:emilijagolubov@live.ca' className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
                                 <Mail size={18} className="text-[#C19A5B]" />
-                                {t.contactSection.emailVal}
+                                emilijagolubov@live.ca
                             </a>
                             <a href='https://www.google.com/maps/place/NEMA+DALJE/@45.2091999,19.8163856,495m/data=!3m2!1e3!4b1!4m6!3m5!1s0x475b0f003133a14f:0x8a27fdfd1f8f041d!8m2!3d45.2091999!4d19.8163856!16s%2Fg%2F11y5c274wm!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDcyNi4wIKXMDSoASAFQAw%3D%3D' className="flex items-center gap-3 justify-center md:justify-start hover:text-white transition-colors cursor-pointer">
                                 <MapPin size={18} className="text-[#C19A5B]" />

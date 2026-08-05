@@ -94,7 +94,7 @@ export default function KakoDoNas() {
 
                             {/* Email polje */}
                             <a
-                                href="mailto:emilijagolubov@gmail.com"
+                                href="mailto:emilijagolubov@live.ca"
                                 className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 hover:border-[#C19A5B]/50"
                             >
                                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#C19A5B]/20 text-[#C19A5B] transition-transform group-hover:scale-110">
@@ -105,7 +105,7 @@ export default function KakoDoNas() {
                                         {t.contactSection?.email || 'Email adresa'}
                                     </span>
                                     <span className="text-base font-semibold text-[#F5EFE6] group-hover:text-[#C19A5B] transition-colors">
-                                        {t.contactSection?.emailVal || 'info@vistanova.rs'}
+                                        emilijagolubov@live.ca
                                     </span>
                                 </div>
                             </a>

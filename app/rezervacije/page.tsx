@@ -7,7 +7,7 @@ import { DateRange } from 'react-day-picker';
 import { differenceInDays, format } from 'date-fns';
 import { srLatn, enUS } from 'date-fns/locale';
 import { DatePicker } from '@/components/DatePicker';
-import { useLanguage } from '@/components/LanguageContext'; // Dodato preuzimanje jezika
+import { useLanguage } from '@/components/LanguageContext';
 
 export default function RezervacijaPage() {
   const { activeLang, t } = useLanguage();
@@ -28,8 +28,11 @@ export default function RezervacijaPage() {
     message: '',
   });
 
-  const PRICE_PER_NIGHT = 150;
-  const totalPrice = nights * PRICE_PER_NIGHT;
+  // --- LOGIKA ZA CENU ---
+  const extraGuests = Math.max(0, formData.guests - 2);
+  const pricePerNight = 150 + (extraGuests * 30);
+  const totalPrice = nights * pricePerNight;
+  // ----------------------
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
@@ -55,12 +58,23 @@ export default function RezervacijaPage() {
       totalPrice
     };
 
-    console.log("Šaljemo ove podatke:", dataToSend);
+    try {
+      const res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSend),
+      });
 
-    setTimeout(() => {
+      if (res.ok) {
+        setStep(4);
+      } else {
+        alert("Došlo je do greške prilikom slanja. Pokušajte ponovo.");
+      }
+    } catch (err) {
+      alert("Mrežna greška. Proverite internet konekciju.");
+    } finally {
       setIsSubmitting(false);
-      setStep(4);
-    }, 2000);
+    }
   };
 
   return (
@@ -133,6 +147,10 @@ export default function RezervacijaPage() {
                   <div>
                     <h3 className="font-semibold text-lg">{t.booking.step2.guests}</h3>
                     <p className="text-sm text-[#F5EFE6]/60">{t.booking.step2.maxGuests}</p>
+                    {/* NOVO: Informacija o doplati */}
+                    <p className="text-xs font-medium text-[#C19A5B] mt-1.5 border border-[#C19A5B]/30 inline-block px-2 py-0.5 rounded-md bg-[#C19A5B]/10">
+                      {activeLang === 'SRB' ? '+30€ za svaku osobu preko 2' : '+30€ for each person over 2'}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 self-end sm:self-auto">
@@ -207,7 +225,6 @@ export default function RezervacijaPage() {
                     placeholder={t.booking.step3.emailPlaceholder}
                   />
                 </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.phoneLabel}</label>
                   <input 
