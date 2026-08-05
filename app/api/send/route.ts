@@ -80,6 +80,7 @@ export async function POST(request: Request) {
         </div>
       `,
     });
+    
 
     return NextResponse.json({ success: true, ownerEmailData });
   } catch (error) {
