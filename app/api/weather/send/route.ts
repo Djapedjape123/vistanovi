@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Gazdaricin mejl (zameniti sa njenom pravom adresom)
-const OWNER_EMAIL = 'emilijagolubov@gmail.com';
+const OWNER_EMAIL = 'emilijagolubov@live.ca';
 
 export async function POST(request: Request) {
   try {
