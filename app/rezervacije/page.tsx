@@ -16,7 +16,7 @@ export default function RezervacijaPage() {
   const [step, setStep] = useState(1);
   const [nights, setNights] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   const [formData, setFormData] = useState({
@@ -29,9 +29,14 @@ export default function RezervacijaPage() {
   });
 
   // --- LOGIKA ZA CENU ---
+  // const extraGuests = Math.max(0, formData.guests - 2);
+  // const pricePerNight = 150 + (extraGuests * 30);
+  // const totalPrice = nights * pricePerNight;
+  // --- LOGIKA ZA CENU (Jednokratna doplata +30€ po osobi preko 2) ---
   const extraGuests = Math.max(0, formData.guests - 2);
-  const pricePerNight = 150 + (extraGuests * 30);
-  const totalPrice = nights * pricePerNight;
+  const basePrice = nights * 150; // Osnovna cena samo po noćenjima
+  const totalPrice = basePrice + (extraGuests * 30); // Dodajemo 30€ jednokratno na ukupan iznos
+  // -------------------------------------------------------------i fiksno samo extraGuests * 30 ako je jednokratno
   // ----------------------
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
@@ -43,7 +48,7 @@ export default function RezervacijaPage() {
       const calculatedNights = differenceInDays(dateRange.to, dateRange.from);
       setNights(calculatedNights);
     } else {
-      setNights(0); 
+      setNights(0);
     }
   }, [dateRange]);
 
@@ -82,7 +87,7 @@ export default function RezervacijaPage() {
   return (
     <div className="min-h-screen bg-[#1F3325] text-[#F5EFE6] pt-24 pb-12 px-6">
       <div className="mx-auto max-w-3xl">
-        
+
         {/* PROGRESS BAR */}
         {step < 4 && (
           <>
@@ -97,7 +102,7 @@ export default function RezervacijaPage() {
             </div>
 
             <div className="mb-12 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-[#C19A5B] transition-all duration-500 ease-out"
                 style={{ width: `${(step / 3) * 100}%` }}
               />
@@ -110,7 +115,7 @@ export default function RezervacijaPage() {
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="font-serif text-3xl sm:text-4xl mb-2">{t.booking.step1.title}</h1>
             <p className="text-[#F5EFE6]/70 mb-8">{t.booking.step1.subtitle}</p>
-            
+
             {/* Pametni kalendar koji sam vuče iCal podatke */}
             <div className="mb-8">
               <DatePicker date={dateRange} setDate={setDateRange} />
@@ -132,9 +137,9 @@ export default function RezervacijaPage() {
                 </button>
               </div>
             ) : (
-               <div className="text-center text-[#F5EFE6]/50 italic">
-                 {t.booking.step1.pleaseSelect}
-               </div>
+              <div className="text-center text-[#F5EFE6]/50 italic">
+                {t.booking.step1.pleaseSelect}
+              </div>
             )}
           </div>
         )}
@@ -143,7 +148,7 @@ export default function RezervacijaPage() {
         {step === 2 && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="font-serif text-3xl sm:text-4xl mb-8">{t.booking.step2.title}</h1>
-            
+
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-center gap-4">
@@ -157,20 +162,20 @@ export default function RezervacijaPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 self-end sm:self-auto">
-                  <button 
-                    onClick={() => setFormData({...formData, guests: Math.max(1, formData.guests - 1)})}
+                  <button
+                    onClick={() => setFormData({ ...formData, guests: Math.max(1, formData.guests - 1) })}
                     className="w-10 h-10 rounded-full border border-[#C19A5B]/50 text-[#C19A5B] flex items-center justify-center hover:bg-[#C19A5B]/20 text-xl transition-colors"
                   >-</button>
                   <span className="text-xl font-bold w-4 text-center">{formData.guests}</span>
-                  <button 
-                    onClick={() => setFormData({...formData, guests: Math.min(6, formData.guests + 1)})}
+                  <button
+                    onClick={() => setFormData({ ...formData, guests: Math.min(6, formData.guests + 1) })}
                     className="w-10 h-10 rounded-full border border-[#C19A5B]/50 text-[#C19A5B] flex items-center justify-center hover:bg-[#C19A5B]/20 text-xl transition-colors"
                   >+</button>
                 </div>
               </div>
 
-              <div 
-                onClick={() => setFormData({...formData, hasPets: !formData.hasPets})}
+              <div
+                onClick={() => setFormData({ ...formData, hasPets: !formData.hasPets })}
                 className={`cursor-pointer flex items-center justify-between rounded-2xl border p-6 transition-all duration-300 ${formData.hasPets ? 'border-[#C19A5B] bg-[#C19A5B]/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}
               >
                 <div className="flex items-center gap-4">
@@ -203,38 +208,38 @@ export default function RezervacijaPage() {
         {step === 3 && (
           <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="font-serif text-3xl sm:text-4xl mb-8">{t.booking.step3.title}</h1>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.nameLabel}</label>
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
                     placeholder={t.booking.step3.namePlaceholder}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.emailLabel}</label>
-                  <input 
+                  <input
                     required
-                    type="email" 
+                    type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
                     placeholder={t.booking.step3.emailPlaceholder}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F5EFE6]/70 mb-1.5">{t.booking.step3.phoneLabel}</label>
-                  <input 
+                  <input
                     required
-                    type="tel" 
+                    type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[#F5EFE6] outline-none transition-colors focus:border-[#C19A5B] focus:bg-white/10"
                     placeholder={t.booking.step3.phonePlaceholder}
                   />
@@ -243,7 +248,7 @@ export default function RezervacijaPage() {
 
               <div className="rounded-2xl border border-[#C19A5B]/30 bg-[#C19A5B]/10 p-6 h-fit">
                 <h3 className="font-serif text-xl text-[#C19A5B] mb-4">{t.booking.step3.summaryTitle}</h3>
-                
+
                 <div className="space-y-3 text-sm text-[#F5EFE6]/80 mb-6">
                   <div className="flex justify-between">
                     <span>{t.booking.step3.nightsLabel}</span>
@@ -258,7 +263,7 @@ export default function RezervacijaPage() {
                     <span className="font-medium text-[#F5EFE6]">{formData.hasPets ? t.booking.step3.yes : t.booking.step3.no}</span>
                   </div>
                 </div>
-                
+
                 <div className="pt-4 border-t border-[#C19A5B]/20 flex justify-between items-center">
                   <span className="text-[#F5EFE6]">{t.booking.step3.totalLabel}</span>
                   <span className="font-serif text-2xl font-bold text-[#C19A5B]">{totalPrice} €</span>
@@ -270,8 +275,8 @@ export default function RezervacijaPage() {
               <button type="button" onClick={prevStep} disabled={isSubmitting} className="px-8 py-3 rounded-full border border-white/20 text-[#F5EFE6] hover:bg-white/5 transition-colors disabled:opacity-50">
                 {t.booking.step2.backBtn}
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isSubmitting}
                 className="flex-1 flex items-center justify-center gap-2 px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors disabled:opacity-70"
               >
