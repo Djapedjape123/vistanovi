@@ -50,7 +50,7 @@ export async function POST(req: Request) {
             <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
               <li style="margin-bottom: 10px;"><strong>Ime i Prezime:</strong> ${name}</li>
               <li style="margin-bottom: 10px;"><strong>E-mail adresa:</strong> <a href="mailto:${email}" style="color: #C19A5B;">${email}</a></li>
-              <li style="margin-bottom: 10px;"><strong>Broj telefona:</strong> ${phone}</li>
+              <li style="margin-bottom: 10px;"><strong>Broj telefona:</strong> <a href="tel:${phone}" style="color: #C19A5B;">${phone}</a></li>
             </ul>
 
             <h3 style="color: #1F3325; border-bottom: 2px solid #C19A5B; padding-bottom: 5px;">Detalji Boravka</h3>
