@@ -37,6 +37,7 @@ export default function RezervacijaPage() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
+  // Preračunavanje broja noćenja čim korisnik izabere datume u DatePicker-u
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
       const calculatedNights = differenceInDays(dateRange.to, dateRange.from);
@@ -50,6 +51,7 @@ export default function RezervacijaPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Priprema podataka za slanje na naš `/api/book`
     const dataToSend = {
       ...formData,
       checkIn: dateRange?.from ? format(dateRange.from, 'dd.MM.yyyy') : '',
@@ -66,7 +68,7 @@ export default function RezervacijaPage() {
       });
 
       if (res.ok) {
-        setStep(4);
+        setStep(4); // Prikazujemo "Uspešno poslato"
       } else {
         alert("Došlo je do greške prilikom slanja. Pokušajte ponovo.");
       }
@@ -81,6 +83,7 @@ export default function RezervacijaPage() {
     <div className="min-h-screen bg-[#1F3325] text-[#F5EFE6] pt-24 pb-12 px-6">
       <div className="mx-auto max-w-3xl">
         
+        {/* PROGRESS BAR */}
         {step < 4 && (
           <>
             <div className="mb-8 flex items-center justify-between">
@@ -108,6 +111,7 @@ export default function RezervacijaPage() {
             <h1 className="font-serif text-3xl sm:text-4xl mb-2">{t.booking.step1.title}</h1>
             <p className="text-[#F5EFE6]/70 mb-8">{t.booking.step1.subtitle}</p>
             
+            {/* Pametni kalendar koji sam vuče iCal podatke */}
             <div className="mb-8">
               <DatePicker date={dateRange} setDate={setDateRange} />
             </div>
@@ -147,7 +151,6 @@ export default function RezervacijaPage() {
                   <div>
                     <h3 className="font-semibold text-lg">{t.booking.step2.guests}</h3>
                     <p className="text-sm text-[#F5EFE6]/60">{t.booking.step2.maxGuests}</p>
-                    {/* NOVO: Informacija o doplati */}
                     <p className="text-xs font-medium text-[#C19A5B] mt-1.5 border border-[#C19A5B]/30 inline-block px-2 py-0.5 rounded-md bg-[#C19A5B]/10">
                       {activeLang === 'SRB' ? '+30€ za svaku osobu preko 2' : '+30€ for each person over 2'}
                     </p>

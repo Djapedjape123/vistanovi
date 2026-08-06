@@ -1,10 +1,9 @@
-// components/DatePicker.tsx
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DayPicker, DateRange } from 'react-day-picker';
-import { srLatn } from 'date-fns/locale'; // Za srpski jezik
-import 'react-day-picker/dist/style.css'; // Osnovni stilovi koje ćemo pregaziti
+import { srLatn } from 'date-fns/locale';
+import 'react-day-picker/dist/style.css';
 
 interface DatePickerProps {
   date: DateRange | undefined;
@@ -12,21 +11,58 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ date, setDate }: DatePickerProps) {
-  // Ovde ćemo kasnije ubaciti logiku za povlačenje zauzetih datuma sa Bookinga
-  // Za sada stavljamo primer: isključujemo datume pre današnjeg
-  const disabledDays = { before: new Date() };
+  // Stanje u kom čuvamo zauzete datume sa Bookinga
+  const [bookedDays, setBookedDays] = useState<{ from: Date; to: Date }[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Povlačenje iCal podataka sa našeg servera čim se komponenta učita
+  useEffect(() => {
+    const fetchBookedDates = async () => {
+      try {
+        const response = await fetch('/api/calendar');
+        if (response.ok) {
+          const data = await response.json();
+          
+          // API vraća datume kao običan tekst, moramo ih pretvoriti u JavaScript Date objekte
+          const parsedRanges = data.disabledRanges.map((range: { from: string, to: string }) => ({
+            from: new Date(range.from),
+            to: new Date(range.to)
+          }));
+          
+          setBookedDays(parsedRanges);
+        }
+      } catch (error) {
+        console.error("Greška pri učitavanju kalendara:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBookedDates();
+  }, []);
+
+  // Spajamo pravila: isključujemo prošlost + isključujemo datume sa Bookinga
+  const disabledDays = [
+    { before: new Date() },
+    ...bookedDays
+  ];
 
   return (
-    <div className="flex justify-center p-4">
-      {/* 
-        Koristimo Tailwind klase da pregazimo defaultne stilove react-day-picker-a.
-        Stilizujemo ga u tamnu temu sa zlatnim akcentima.
-      */}
+    <div className="flex flex-col items-center p-4 relative">
+      
+      {/* Indikator učitavanja dok kalendar proverava Booking */}
+      {isLoading && (
+        <div className="absolute top-2 right-4 flex items-center gap-2 text-xs text-[#C19A5B] font-bold animate-pulse">
+          <div className="w-2 h-2 bg-[#C19A5B] rounded-full"></div>
+          Sinhronizacija...
+        </div>
+      )}
+
       <style>{`
         .rdp {
           --rdp-cell-size: 45px;
-          --rdp-accent-color: #C19A5B; /* Tvoja zlatna */
-          --rdp-background-color: rgba(193, 154, 91, 0.2); /* Zlatna sa providnošću za hover/selected */
+          --rdp-accent-color: #C19A5B;
+          --rdp-background-color: rgba(193, 154, 91, 0.2);
           --rdp-accent-color-dark: #d3ac6c;
           --rdp-background-color-dark: rgba(193, 154, 91, 0.3);
           --rdp-outline: 2px solid var(--rdp-accent-color);
@@ -36,7 +72,7 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
         .rdp-day_selected, 
         .rdp-day_selected:focus-visible, 
         .rdp-day_selected:hover {
-          color: #1F3325; /* Tamno zelena za tekst na izabranim datumima */
+          color: #1F3325;
           background-color: var(--rdp-accent-color);
         }
         .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
@@ -44,10 +80,11 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           color: #F5EFE6;
         }
         .rdp-day_disabled {
-          opacity: 0.3;
+          opacity: 0.25;
+          text-decoration: line-through; /* Da bude jasnije da je zauzeto */
         }
         .rdp-caption_label {
-          font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; /* Da se slaže sa naslovima */
+          font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
           font-size: 1.25rem;
           color: #C19A5B;
         }
@@ -58,14 +95,14 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           background-color: var(--rdp-background-color);
         }
         .rdp-head_cell {
-          color: rgba(245, 239, 230, 0.6); /* Prigušena bela za dane u nedelji */
+          color: rgba(245, 239, 230, 0.6);
           text-transform: uppercase;
           font-size: 0.8rem;
           letter-spacing: 0.05em;
         }
         .rdp-day {
           color: #F5EFE6;
-          border-radius: 8px; /* Malo kockastiji/moderniji izgled */
+          border-radius: 8px;
         }
         .rdp-day_range_middle {
           background-color: var(--rdp-background-color) !important;
@@ -86,12 +123,13 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
         mode="range"
         selected={date}
         onSelect={setDate}
-        locale={srLatn} // Prevod na srpski (latinica)
+        locale={srLatn}
         disabled={disabledDays}
-        numberOfMonths={1} // Na mobilnom 1, možeš staviti 2 za desktop kasnije
+        numberOfMonths={1}
         pagedNavigation
         showOutsideDays={false}
-        className="border border-white/10 bg-white/5 p-4 rounded-2xl backdrop-blur-md"
+        className="border border-white/10 bg-white/5 p-4 rounded-2xl backdrop-blur-md transition-opacity duration-300"
+        style={{ opacity: isLoading ? 0.6 : 1 }}
       />
     </div>
   );
