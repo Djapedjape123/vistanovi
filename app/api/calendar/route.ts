@@ -12,7 +12,6 @@ export async function GET() {
       return NextResponse.json({ disabledRanges: [] });
     }
 
-    // 1. Dodajemo lažni User-Agent da nas Booking ne bi blokirao
     const response = await fetch(icalUrl, { 
       next: { revalidate: 3600 },
       headers: {
@@ -28,7 +27,6 @@ export async function GET() {
 
     const icsData = await response.text();
 
-    // 2. Osiguranje da podaci zapravo postoje pre parsiranja
     if (!icsData || icsData.trim() === '') {
       console.error('Booking je vratio prazan fajl');
       return NextResponse.json({ disabledRanges: [] });
@@ -36,7 +34,6 @@ export async function GET() {
 
     const events = ical.sync.parseICS(icsData);
     
-    // 3. Osiguranje da je parseICS uspešno vratio objekat (rešava "undefined" grešku)
     if (!events || typeof events !== 'object') {
       console.error('Nema događaja u iCal fajlu ili je parsiranje puklo');
       return NextResponse.json({ disabledRanges: [] });
@@ -44,15 +41,15 @@ export async function GET() {
 
     const disabledRanges = [];
 
-    // 4. Bezbedan prolazak kroz događaje
     for (const event of Object.values(events)) {
-      // Proveravamo da li je to VEVENT i da li ima definisan početak i kraj
+      // 1. Osiguravamo TypeScript da 'event' postoji i nije undefined
+      if (!event) continue;
+
+      // 2. Proveravamo tip događaja i prisustvo datuma
       if (event.type === 'VEVENT' && event.start && event.end) {
-        
         const checkInDate = new Date(event.start as Date);
         const checkOutDate = new Date(event.end as Date);
         
-        // ZLATNO PRAVILO: Oslobađamo dan odlaska
         const actualDisabledEnd = new Date(checkOutDate.getTime() - 24 * 60 * 60 * 1000);
 
         disabledRanges.push({
@@ -66,7 +63,6 @@ export async function GET() {
 
   } catch (error) {
     console.error('Kritična greška pri čitanju iCal kalendara:', error);
-    // Vraćamo prazan niz da ne bismo srušili celu stranicu za rezervacije
     return NextResponse.json({ disabledRanges: [] }); 
   }
 }
