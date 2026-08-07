@@ -60,6 +60,7 @@ export default function Home() {
        <div className="relative z-20 -translate-y-6 sm:translate-y-0">
           <WeatherWidget />
         </div>
+        
 
         <section className="relative z-10 flex min-h-screen flex-col justify-between px-6 pt-32 pb-12 mx-auto max-w-6xl">
           {/* 
