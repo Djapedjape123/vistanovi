@@ -57,7 +57,7 @@ export default function Home() {
           PODIZANJE WEATHER WIDGET-a NA MOBILNOM:
           -translate-y-6 ga pomera na gore na malim ekranima, a sm:translate-y-0 ga vraća na normalu za tablete i desktop.
         */}
-        <div className="relative z-50 -translate-y-6 sm:translate-y-0">
+       <div className="relative z-20 -translate-y-6 sm:translate-y-0">
           <WeatherWidget />
         </div>
 
