@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Gazdaricin mejl (zameniti sa njenom pravom adresom)
+
 const OWNER_EMAIL = 'emilijagolubov@live.ca';
 
 export async function POST(request: Request) {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Fale obavezna polja.' }, { status: 400 });
     }
 
-    // 1. MEJL ZA GAZDARICU (Obaveštenje o novoj kontakt poruci)
+    
     const ownerEmailData = await resend.emails.send({
       from: 'Vista Novi Kontakt <onboarding@resend.dev>',
       to: OWNER_EMAIL,
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       `,
     });
 
-    // 2. MEJL ZA GOSTA (Potvrda prijema poruke)
+    
     await resend.emails.send({
       from: 'Vista Novi <onboarding@resend.dev>',
       to: email,

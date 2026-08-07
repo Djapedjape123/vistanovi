@@ -29,10 +29,7 @@ export default function RezervacijaPage() {
   });
 
   // --- LOGIKA ZA CENU ---
-  // const extraGuests = Math.max(0, formData.guests - 2);
-  // const pricePerNight = 150 + (extraGuests * 30);
-  // const totalPrice = nights * pricePerNight;
-  // --- LOGIKA ZA CENU (Jednokratna doplata +30€ po osobi preko 2) ---
+  
   const extraGuests = Math.max(0, formData.guests - 2);
   const basePrice = nights * 150; // Osnovna cena samo po noćenjima
   const totalPrice = basePrice + (extraGuests * 30); // Dodajemo 30€ jednokratno na ukupan iznos
