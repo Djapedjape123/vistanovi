@@ -8,7 +8,6 @@ import KakoDoNas from '@/components/KakoDoNas';
 import WeatherWidget from '@/components/WeatherWidget';
 import ForecastSection from '@/components/ForecastSection';
 
-// Zamenite ove linkove sa vašim direktnim Cloud linkovima slika
 const HERO_IMAGES = [
   'https://res.cloudinary.com/duomot4hp/image/upload/v1784648479/WhatsApp_Image_2026-07-20_at_12.23.03_pgmcnz.jpg',
   'https://res.cloudinary.com/duomot4hp/image/upload/v1784648468/WhatsApp_Image_2026-07-20_at_12.23.04_nkakcv.jpg',
@@ -18,17 +17,14 @@ const HERO_IMAGES = [
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // Dohvatamo funkciju za prevode i trenutni jezik iz Context-a
   const { t, activeLang } = useLanguage();
 
-  // FEATURES prebacujemo ovde unutra kako bismo mogli da koristimo prevode
   const FEATURES = [
     { icon: Users, label: t.hero.features.capacity },
     { icon: Waves, label: t.hero.features.pool },
     { icon: Wifi, label: t.hero.features.wifi },
   ];
 
-  // Smena slika na svakih 4 sekunde sa automatskim ponavljanjem
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % HERO_IMAGES.length);
@@ -40,10 +36,8 @@ export default function Home() {
   return (
     <main className="w-full bg-[#1F3325]">
       
-      {/* 1. HERO SEKCIJA - Zaseban kontejner koji drži slajder i Hero tekst */}
       <div className="relative min-h-screen w-full overflow-hidden">
         
-        {/* Background Slider sa Fade i Zoom Efektom */}
         <div className="absolute inset-0 z-0">
           {HERO_IMAGES.map((imgUrl, index) => (
             <div
@@ -56,36 +50,35 @@ export default function Home() {
               style={{ backgroundImage: `url('${imgUrl}')` }}
             />
           ))}
-
-          {/* Gradijent preko slika za bolju čitljivost teksta i stapanje sa sajtom */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#1F3325] via-[#1F3325]/50 to-[#1F3325]/70" />
         </div>
-        <WeatherWidget />
 
-        {/* Hero Sadržaj */}
+        {/* 
+          PODIZANJE WEATHER WIDGET-a NA MOBILNOM:
+          -translate-y-6 ga pomera na gore na malim ekranima, a sm:translate-y-0 ga vraća na normalu za tablete i desktop.
+        */}
+        <div className="relative z-50 -translate-y-6 sm:translate-y-0">
+          <WeatherWidget />
+        </div>
+
         <section className="relative z-10 flex min-h-screen flex-col justify-between px-6 pt-32 pb-12 mx-auto max-w-6xl">
-          <div className="flex flex-col items-start justify-center flex-1 max-w-3xl pt-12">
+          {/* 
+            SPUŠTANJE TEKSTA NA MOBILNOM:
+            Povećali smo gornji padding (pt-28 umesto pt-12) i dodali mt-6, dok se na desktopu vraća na staro (sm:pt-12 sm:mt-0).
+          */}
+          <div className="flex flex-col items-start justify-center flex-1 max-w-3xl pt-28 mt-6 sm:pt-12 sm:mt-0">
             
-            {/* Tagline / Badge */}
             <div className="inline-flex items-center gap-2 rounded-full bg-[#C19A5B]/20 border border-[#C19A5B]/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#C19A5B] backdrop-blur-md mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-[#C19A5B] animate-pulse" />
               {t.hero.badge}
             </div>
 
-
-            {/* Glavni Naslov */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] tracking-tight text-[#F5EFE6] mb-6">
               {t.hero.title} <br />
               <span className="italic font-light text-[#C19A5B]">Vista Novi</span>
               {activeLang === 'SRB' ? ' Oazu' : ' Oasis'}
             </h1>
 
-            {/* Podnaslov */}
-            {/* <p className="text-base sm:text-lg text-[#F5EFE6]/80 font-light max-w-xl leading-relaxed mb-8">
-              {t.hero.subtitle}
-            </p> */}
-
-            {/* Akciona Dugmad */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
               <Link
                 href="/rezervacije"
@@ -106,10 +99,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Donji deo: Info traka & Indikatori Slajdera */}
           <div className="mt-12 pt-8 border-t border-[#F5EFE6]/10 flex flex-col md:flex-row items-center justify-between gap-6">
             
-            {/* Karakteristike */}
             <div className="flex flex-wrap items-center gap-6 sm:gap-8">
               {FEATURES.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2.5 text-[#F5EFE6]/90 text-sm font-medium">
@@ -119,7 +110,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Slajder Indikatori (Tačke/Linije) */}
             <div className="flex items-center gap-2">
               {HERO_IMAGES.map((_, idx) => (
                 <button
@@ -135,16 +125,13 @@ export default function Home() {
               ))}
             </div>
 
-
           </div>
         </section>
       </div>
 
-      {/* 2. OSTALE SEKCIJE */}
       <KakoDoNas />
       <ForecastSection />
       
-
     </main>
   );
 }
