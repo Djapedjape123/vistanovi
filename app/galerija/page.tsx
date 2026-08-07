@@ -1,40 +1,73 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
-import { galleryItems, galleryCategories, galleryStories, Category } from '@/lib/galleryData'; // Tvoj fajl
+import { X, ChevronLeft, ChevronRight, Maximize2, MoveHorizontal } from 'lucide-react';
+import { galleryItems, galleryCategories, galleryStories, Category } from '@/lib/galleryData';
 
 export default function GalerijaPage() {
     const [activeCategory, setActiveCategory] = useState<Category>('Sve');
-    const [visibleCount, setVisibleCount] = useState(12); // Počinjemo sa 12 slika radi brzine
+    const [visibleCount, setVisibleCount] = useState(12);
 
-    // Lightbox State (kad je null, lightbox je zatvoren)
+    // Lightbox State
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    
+    // Swipe State za mobilne telefone
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    // Minimalna udaljenost (u pikselima) koju prst mora da pređe da bi se računalo kao swipe
+    const minSwipeDistance = 50; 
 
     // 1. Filtriranje slika
     const filteredImages = galleryItems.filter(
         (item) => activeCategory === 'Sve' || item.category === activeCategory
     );
 
-    // 2. Ograničavanje broja prikazanih slika (Load More logika)
     const displayedImages = filteredImages.slice(0, visibleCount);
 
-    // Lightbox Kontrole (Tastatura i zabrana skrolovanja pozadine)
+    // Logika za navigaciju u lightbox-u
+    const goToNext = () => {
+        setLightboxIndex((prev) => (prev! + 1) % filteredImages.length);
+    };
+
+    const goToPrev = () => {
+        setLightboxIndex((prev) => (prev! - 1 + filteredImages.length) % filteredImages.length);
+    };
+
+    // Logika za Swipe (Dodir prstom)
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null); // Resetujemo krajnji dodir
+        setTouchStart(e.targetTouches[0].clientX); // Beležimo gde je prst spustio na X osi
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX); // Beležimo gde se prst pomera
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            goToNext(); // Prevlaci ulevo -> sledeća slika
+        }
+        if (isRightSwipe) {
+            goToPrev(); // Prevlaci udesno -> prethodna slika
+        }
+    };
+
+    // Tastatura i zabrana skrola
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (lightboxIndex === null) return;
-
-            if (e.key === 'Escape') {
-                setLightboxIndex(null);
-            } else if (e.key === 'ArrowRight') {
-                setLightboxIndex((prev) => (prev! + 1) % filteredImages.length);
-            } else if (e.key === 'ArrowLeft') {
-                setLightboxIndex((prev) => (prev! - 1 + filteredImages.length) % filteredImages.length);
-            }
+            if (e.key === 'Escape') setLightboxIndex(null);
+            else if (e.key === 'ArrowRight') goToNext();
+            else if (e.key === 'ArrowLeft') goToPrev();
         };
 
-        // Blokiraj skrol na sajtu kad je slika uvećana
         if (lightboxIndex !== null) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -62,14 +95,12 @@ export default function GalerijaPage() {
                     </p>
                 </div>
 
-                {/* --- 1. STORIES TRAKA (Brzi pregled po temama) --- */}
                 {/* --- 1. STORIES TRAKA --- */}
                 <div className="mb-12 flex gap-4 overflow-x-auto pb-4 snap-x no-scrollbar animate-in fade-in duration-700 delay-100">
                     {galleryStories.map((story, index) => (
                         <div
                             key={`story-${story.id}-${index}`}
                             onClick={() => {
-                                // Direktno postavlja filterCategory bez komplikovanih prevoda
                                 setActiveCategory(story.filterCategory as Category);
                                 setVisibleCount(12);
                             }}
@@ -111,26 +142,22 @@ export default function GalerijaPage() {
                     ))}
                 </div>
 
-                {/* --- 3. BENTO MREŽA SLIKA (Masonry osećaj) --- */}
+                {/* --- 3. BENTO MREŽA SLIKA --- */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[250px] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
                     {displayedImages.map((item, index) => (
                         <div
                             key={item.id}
                             onClick={() => setLightboxIndex(index)}
                             className={`group relative overflow-hidden rounded-2xl cursor-pointer bg-white/5 transition-transform duration-500 hover:scale-[0.98] ${
-                                // Ako je isHero true, slika zauzima duplo više mesta (2x2 kocke)
                                 item.isHero ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'
                                 }`}
                         >
                             <img
                                 src={item.url}
                                 alt={item.title}
-
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                             />
 
-                            {/* Tamni overlay sa tekstom na hover (samo na desktopu, na mobilnom se slabije vidi) */}
                             <div className="absolute inset-0 bg-gradient-to-t from-[#1F3325]/90 via-[#1F3325]/20 to-transparent opacity-0 transition-opacity duration-300 md:group-hover:opacity-100 flex flex-col justify-end p-6">
                                 <div className="translate-y-4 transition-transform duration-300 group-hover:translate-y-0 flex items-center justify-between">
                                     <div>
@@ -160,10 +187,14 @@ export default function GalerijaPage() {
                     </div>
                 )}
 
-                {/* --- 4. LIGHTBOX (PUNOEKRANSKI MODAL ZA PREGLED) --- */}
+                {/* --- 4. LIGHTBOX SA SWIPE OPCIJOM --- */}
                 {lightboxIndex !== null && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-200">
-
+                    <div 
+                        className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-200"
+                        onTouchStart={onTouchStart}
+                        onTouchMove={onTouchMove}
+                        onTouchEnd={onTouchEnd}
+                    >
                         {/* Top Traka (Brojač i X) */}
                         <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-4 md:p-6 z-50">
                             <div className="text-[#F5EFE6]/70 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10">
@@ -177,40 +208,42 @@ export default function GalerijaPage() {
                             </button>
                         </div>
 
-                        {/* Strelica Levo (Skrivena na jako malim ekranima gde ljudi koriste swipe) */}
+                        {/* Strelica Levo (Skrivena na malim ekranima) */}
                         <button
-                            onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => (prev! - 1 + filteredImages.length) % filteredImages.length); }}
+                            onClick={(e) => { e.stopPropagation(); goToPrev(); }}
                             className="hidden sm:flex absolute left-4 md:left-10 z-50 w-12 h-12 md:w-14 md:h-14 items-center justify-center rounded-full bg-white/10 text-white hover:bg-[#C19A5B] transition-colors backdrop-blur-md"
                         >
                             <ChevronLeft size={32} />
                         </button>
 
-                        {/* Glavna uvećana slika */}
-                        {/* Glavna uvećana slika */}
-                        <div
-                            className="relative w-full max-w-6xl h-[55vh] sm:h-[75vh] md:h-[85vh] mx-auto px-4 sm:px-6"
-                            onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => (prev! + 1) % filteredImages.length); }}
-                        >
+                        {/* Glavna uvećana slika - Uklonjen onClick za menjanje slika da ne smeta swipe-u */}
+                        <div className="relative w-full max-w-6xl h-[55vh] sm:h-[75vh] md:h-[85vh] mx-auto px-4 sm:px-6 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
                             <img
                                 src={filteredImages[lightboxIndex].url}
                                 alt={filteredImages[lightboxIndex].title}
                                 className="w-full h-full object-contain rounded-lg animate-in zoom-in-95 duration-300"
                             />
+                        </div>
 
-                            {/* Opis slike u dnu ekrana */}
-                            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 text-center bg-black/60 px-6 py-2 md:py-3 rounded-full backdrop-blur-md w-[90%] sm:w-auto max-w-[95vw]">
-                                <span className="text-[#C19A5B] text-[10px] md:text-xs uppercase tracking-widest font-bold block mb-0.5">
-                                    {filteredImages[lightboxIndex].category}
-                                </span>
-                                <span className="text-white font-serif text-sm md:text-base line-clamp-1">
-                                    {filteredImages[lightboxIndex].title}
-                                </span>
-                            </div>
+                        {/* Vizuelna instrukcija za Swipe (Samo na telefonima) */}
+                        {/* <div className="absolute bottom-24 sm:hidden flex items-center gap-2 text-white/50 bg-black/40 px-4 py-1.5 rounded-full backdrop-blur-sm pointer-events-none animate-pulse">
+                            <MoveHorizontal size={16} />
+                            <span className="text-xs">Prevucite prstom</span>
+                        </div> */}
+
+                        {/* Opis slike u dnu ekrana */}
+                        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 text-center bg-black/60 px-6 py-3 rounded-full backdrop-blur-md w-[90%] sm:w-auto max-w-[95vw]">
+                            <span className="text-[#C19A5B] text-[10px] md:text-xs uppercase tracking-widest font-bold block mb-0.5">
+                                {filteredImages[lightboxIndex].category}
+                            </span>
+                            <span className="text-white font-serif text-sm md:text-base line-clamp-1">
+                                {filteredImages[lightboxIndex].title}
+                            </span>
                         </div>
 
                         {/* Strelica Desno */}
                         <button
-                            onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => (prev! + 1) % filteredImages.length); }}
+                            onClick={(e) => { e.stopPropagation(); goToNext(); }}
                             className="hidden sm:flex absolute right-4 md:right-10 z-50 w-12 h-12 md:w-14 md:h-14 items-center justify-center rounded-full bg-white/10 text-white hover:bg-[#C19A5B] transition-colors backdrop-blur-md"
                         >
                             <ChevronRight size={32} />
