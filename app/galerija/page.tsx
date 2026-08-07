@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight, Maximize2, MoveHorizontal } from 'lucide-react';
 import { galleryItems, galleryCategories, galleryStories, Category } from '@/lib/galleryData';
 
@@ -11,11 +11,9 @@ export default function GalerijaPage() {
     // Lightbox State
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     
-    // Swipe State za mobilne telefone
-    const [touchStart, setTouchStart] = useState<number | null>(null);
-    const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-    // Minimalna udaljenost (u pikselima) koju prst mora da pređe da bi se računalo kao swipe
+    // Swipe State koristeći useRef (Rešava problem seckanja i "zakucavanja")
+    const touchStartX = useRef<number | null>(null);
+    const touchEndX = useRef<number | null>(null);
     const minSwipeDistance = 50; 
 
     // 1. Filtriranje slika
@@ -34,29 +32,33 @@ export default function GalerijaPage() {
         setLightboxIndex((prev) => (prev! - 1 + filteredImages.length) % filteredImages.length);
     };
 
-    // Logika za Swipe (Dodir prstom)
+    // Glatka Swipe logika (Bez zagušivanja aplikacije)
     const onTouchStart = (e: React.TouchEvent) => {
-        setTouchEnd(null); // Resetujemo krajnji dodir
-        setTouchStart(e.targetTouches[0].clientX); // Beležimo gde je prst spustio na X osi
+        touchEndX.current = null;
+        touchStartX.current = e.targetTouches[0].clientX;
     };
 
     const onTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX); // Beležimo gde se prst pomera
+        touchEndX.current = e.targetTouches[0].clientX;
     };
 
     const onTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
+        if (!touchStartX.current || !touchEndX.current) return;
         
-        const distance = touchStart - touchEnd;
+        const distance = touchStartX.current - touchEndX.current;
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
 
         if (isLeftSwipe) {
-            goToNext(); // Prevlaci ulevo -> sledeća slika
+            goToNext();
         }
         if (isRightSwipe) {
-            goToPrev(); // Prevlaci udesno -> prethodna slika
+            goToPrev();
         }
+        
+        // Reset
+        touchStartX.current = null;
+        touchEndX.current = null;
     };
 
     // Tastatura i zabrana skrola
@@ -195,20 +197,20 @@ export default function GalerijaPage() {
                         onTouchMove={onTouchMove}
                         onTouchEnd={onTouchEnd}
                     >
-                        {/* Top Traka (Brojač i X) */}
-                        <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-4 md:p-6 z-50">
-                            <div className="text-[#F5EFE6]/70 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10">
+                        {/* Top Traka (Odmaknuta od ivice zbog notch-a na mobilnom) */}
+                        <div className="absolute top-4 sm:top-6 left-0 right-0 flex items-center justify-between px-4 sm:px-6 z-[60]">
+                            <div className="text-[#F5EFE6]/70 font-mono text-sm bg-black/50 px-4 py-2 rounded-full border border-white/10 shadow-lg">
                                 {lightboxIndex + 1} / {filteredImages.length}
                             </div>
                             <button
                                 onClick={() => setLightboxIndex(null)}
-                                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-[#C19A5B] transition-colors"
+                                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-[#C19A5B] transition-colors shadow-lg"
                             >
                                 <X size={24} />
                             </button>
                         </div>
 
-                        {/* Strelica Levo (Skrivena na malim ekranima) */}
+                        {/* Strelica Levo */}
                         <button
                             onClick={(e) => { e.stopPropagation(); goToPrev(); }}
                             className="hidden sm:flex absolute left-4 md:left-10 z-50 w-12 h-12 md:w-14 md:h-14 items-center justify-center rounded-full bg-white/10 text-white hover:bg-[#C19A5B] transition-colors backdrop-blur-md"
@@ -216,12 +218,13 @@ export default function GalerijaPage() {
                             <ChevronLeft size={32} />
                         </button>
 
-                        {/* Glavna uvećana slika - Uklonjen onClick za menjanje slika da ne smeta swipe-u */}
+                        {/* Glavna uvećana slika (dodat draggable={false} da spreči ghost-drag slike) */}
                         <div className="relative w-full max-w-6xl h-[55vh] sm:h-[75vh] md:h-[85vh] mx-auto px-4 sm:px-6 flex items-center justify-center pointer-events-none sm:pointer-events-auto">
                             <img
                                 src={filteredImages[lightboxIndex].url}
                                 alt={filteredImages[lightboxIndex].title}
-                                className="w-full h-full object-contain rounded-lg animate-in zoom-in-95 duration-300"
+                                draggable={false}
+                                className="w-full h-full object-contain rounded-lg animate-in zoom-in-95 duration-300 select-none pointer-events-auto"
                             />
                         </div>
 
