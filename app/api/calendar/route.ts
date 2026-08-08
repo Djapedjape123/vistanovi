@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import ical from 'node-ical';
 
-export const revalidate = 3600; 
+// OVO JE NAJBITNIJE: Govorimo Vercelu i Next.js-u da NIKADA ne keširaju ovu rutu
+// Uvek mora da se izvrši uživo kada korisnik otvori sajt
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -12,8 +14,9 @@ export async function GET() {
       return NextResponse.json({ disabledRanges: [] });
     }
 
+    // Dodali smo cache: 'no-store' da bismo zaobišli svaki mogući Vercel Cache
     const response = await fetch(icalUrl, { 
-      next: { revalidate: 3600 },
+      cache: 'no-store',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/calendar'
@@ -42,14 +45,24 @@ export async function GET() {
     const disabledRanges = [];
 
     for (const event of Object.values(events)) {
-      // 1. Osiguravamo TypeScript da 'event' postoji i nije undefined
       if (!event) continue;
 
-      // 2. Proveravamo tip događaja i prisustvo datuma
-      if (event.type === 'VEVENT' && event.start && event.end) {
+      // Sada tražimo samo da događaj ima START. 
+      // END nam više nije obavezan uslov da bismo ušli u petlju!
+      if (event.type === 'VEVENT' && event.start) {
         const checkInDate = new Date(event.start as Date);
-        const checkOutDate = new Date(event.end as Date);
+        let checkOutDate;
         
+        // PAMETNA LOGIKA:
+        // Ako postoji 'end' (Prava rezervacija), koristimo njega.
+        // Ako NE postoji (Ti si ručno zatvorio dan u Bookingu), dodajemo tačno 1 dan (24h)
+        if (event.end) {
+          checkOutDate = new Date(event.end as Date);
+        } else {
+          checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));
+        }
+        
+        // ZLATNO PRAVILO: Oslobađamo dan odlaska za sledeće goste
         const actualDisabledEnd = new Date(checkOutDate.getTime() - 24 * 60 * 60 * 1000);
 
         disabledRanges.push({
