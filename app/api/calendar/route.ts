@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import ical from 'node-ical';
 
-// OVO JE NAJBITNIJE: Govorimo Vercelu i Next.js-u da NIKADA ne keširaju ovu rutu
-// Uvek mora da se izvrši uživo kada korisnik otvori sajt
+// Onemogućavamo Vercel keširanje
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
@@ -14,7 +12,6 @@ export async function GET() {
       return NextResponse.json({ disabledRanges: [] });
     }
 
-    // Dodali smo cache: 'no-store' da bismo zaobišli svaki mogući Vercel Cache
     const response = await fetch(icalUrl, { 
       cache: 'no-store',
       headers: {
@@ -24,50 +21,53 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      console.error('Booking je odbio zahtev. Status:', response.status);
+      console.error('Booking je odbio zahtev.');
       return NextResponse.json({ disabledRanges: [] });
     }
 
     const icsData = await response.text();
-
-    if (!icsData || icsData.trim() === '') {
-      console.error('Booking je vratio prazan fajl');
-      return NextResponse.json({ disabledRanges: [] });
-    }
-
-    const events = ical.sync.parseICS(icsData);
-    
-    if (!events || typeof events !== 'object') {
-      console.error('Nema događaja u iCal fajlu ili je parsiranje puklo');
-      return NextResponse.json({ disabledRanges: [] });
-    }
-
     const disabledRanges = [];
+    
+    // Naš sopstveni super-precizni parser: Sečemo tekst fajla na komade gde počinje svaki događaj
+    const events = icsData.split('BEGIN:VEVENT');
 
-    for (const event of Object.values(events)) {
-      if (!event) continue;
+    for (let i = 1; i < events.length; i++) {
+      const ev = events[i];
 
-      // Sada tražimo samo da događaj ima START. 
-      // END nam više nije obavezan uslov da bismo ušli u petlju!
-      if (event.type === 'VEVENT' && event.start) {
-        const checkInDate = new Date(event.start as Date);
-        let checkOutDate;
+      // Izvlačimo tačne brojeve za Godinu, Mesec i Dan, ignorišući sve vremenske zone!
+      const startMatch = ev.match(/DTSTART(?:;.*?)?:(\d{4})(\d{2})(\d{2})/);
+      const endMatch = ev.match(/DTEND(?:;.*?)?:(\d{4})(\d{2})(\d{2})/);
+
+      if (startMatch) {
+        const sYear = parseInt(startMatch[1]);
+        const sMonth = parseInt(startMatch[2]) - 1; // U JavaScriptu meseci idu od 0 (Jan) do 11 (Dec)
+        const sDay = parseInt(startMatch[3]);
         
-        // PAMETNA LOGIKA:
-        // Ako postoji 'end' (Prava rezervacija), koristimo njega.
-        // Ako NE postoji (Ti si ručno zatvorio dan u Bookingu), dodajemo tačno 1 dan (24h)
-        if (event.end) {
-          checkOutDate = new Date(event.end as Date);
+        // Koristimo striktno Date.UTC da izbegnemo pomeranje datuma zbog Vercel servera
+        const checkInDate = new Date(Date.UTC(sYear, sMonth, sDay));
+        let checkOutDate = new Date(Date.UTC(sYear, sMonth, sDay));
+
+        if (endMatch) {
+          const eYear = parseInt(endMatch[1]);
+          const eMonth = parseInt(endMatch[2]) - 1;
+          const eDay = parseInt(endMatch[3]);
+          checkOutDate = new Date(Date.UTC(eYear, eMonth, eDay));
         } else {
-          checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));
+          // Ako je Booking poslao ručni blok (samo 1 dan), dodajemo 1 dan manuelno
+          checkOutDate.setUTCDate(checkOutDate.getUTCDate() + 1);
         }
-        
-        // ZLATNO PRAVILO: Oslobađamo dan odlaska za sledeće goste
-        const actualDisabledEnd = new Date(checkOutDate.getTime() - 24 * 60 * 60 * 1000);
+
+        // ZLATNO PRAVILO: Oslobađamo dan odlaska (-1 dan)
+        checkOutDate.setUTCDate(checkOutDate.getUTCDate() - 1);
+
+        // Osiguranje da "do datuma" nikad ne bude pre "od datuma" (to inače lomi kalendar)
+        if (checkOutDate < checkInDate) {
+          checkOutDate = new Date(checkInDate);
+        }
 
         disabledRanges.push({
-          from: checkInDate,
-          to: actualDisabledEnd, 
+          from: checkInDate.toISOString(),
+          to: checkOutDate.toISOString(),
         });
       }
     }
