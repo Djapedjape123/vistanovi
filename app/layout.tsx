@@ -64,11 +64,11 @@ export const metadata: Metadata = {
     description:
       "Vikendica Vista Novi u Ledincima, Fruška Gora - privatni bazen, priroda i mir.",
     images: [
-      "https://res.cloudinary.com/duomot4hp/image/upload/v1784992379/WhatsApp_Image_2026-07-20_at_12.24.56_1_gvktyd.jpg",
+      "https://res.cloudinary.com/duomot4hp/image/upload/v1785149684/ChatGPT_Image_27._%D1%98%D1%83%D0%BB_2026._13_03_26_z5djuf.png",
     ],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "https://res.cloudinary.com/duomot4hp/image/upload/v1785149684/ChatGPT_Image_27._%D1%98%D1%83%D0%BB_2026._13_03_26_z5djuf.png",
   },
 };
 
@@ -127,5 +127,6 @@ export default function RootLayout({
         </LanguageProvider>
       </body>
     </html>
+    
   );
 }
