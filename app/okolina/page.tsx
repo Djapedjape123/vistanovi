@@ -5,7 +5,7 @@ import OkolinaClient from './OkolinaClient';
 export const metadata: Metadata = {
   title: 'Okolina i Atrakcije | Vista Nova Fruška Gora',
   description: 'Istražite šta sve možete posetiti u blizini vikendice Vista Nova. Otkrijte prelepe manastire Fruške gore, lokalne vinarije, prirodu i atrakcije Novog Sada.',
-  keywords: ['Fruška gora atrakcije', 'šta videti Novi Sad', 'izleti Fruška gora', 'vinarije Fruška gora', 'okolina Novog Sada', 'manastiri Fruška gora'],
+  keywords: ['Fruška gora atrakcije', 'šta videti Novi Sad', 'izleti Fruška gora', 'vinarije Fruška gora', 'okolina Novog Sada', 'manastiri Fruška gora','okolina vikendica Vista Novi'],
   alternates: {
     canonical: 'https://vistanovi.vercel.app/okolina', // Zameniti pravim domenom kasnije
   },
