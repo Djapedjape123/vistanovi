@@ -5,7 +5,7 @@ import AboutClient from './AboutClient';
 export const metadata: Metadata = {
   title: 'O Nama i Smeštaj | Vista Nova Vikendica sa Bazenom',
   description: 'Otkrijte šta sve nudi Vista Nova vikendica. Luksuzan enterijer, predivan bazen i magične večeri na Fruškoj gori. Saznajte da li smo idealan izbor za vaš odmor.',
-  keywords: ['smeštaj Fruška gora', 'vikendica sa bazenom', 'luksuzan odmor Novi Sad', 'iznajmljivanje vikendice karakteristike', 'privatni bazen vikendica'],
+  keywords: ['smeštaj Fruška gora', 'vikendica sa bazenom', 'luksuzan odmor Novi Sad', 'iznajmljivanje vikendice karakteristike', 'privatni bazen vikendica','Bazen sa slanom vodom Fruška Gora','vikendica Fruška Gora sa bazenom'],
   alternates: {
     // Napomena: Ako se tvoj folder zove /smestaj, ostavi ovako. Ako je /o-nama, promeni reč na kraju linka.
     canonical: 'https://vistanovi.vercel.app/smestaj', 

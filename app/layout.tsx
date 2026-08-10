@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     ],
   },
   icons: {
-    icon: "https://res.cloudinary.com/duomot4hp/image/upload/v1785149684/ChatGPT_Image_27._%D1%98%D1%83%D0%BB_2026._13_03_26_z5djuf.png",
+    icon: "/icon.png",
   },
 };
 
@@ -127,6 +127,6 @@ export default function RootLayout({
         </LanguageProvider>
       </body>
     </html>
-    
+
   );
 }
