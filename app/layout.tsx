@@ -18,8 +18,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+///
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vistanovi.rs"),
+  metadataBase: new URL("https://vistanovi.com"),
   title: {
     default: "Vista Novi | Vikendica na Fruškoj gori",
     template: "%s | Vista Novi",
