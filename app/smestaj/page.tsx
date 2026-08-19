@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   keywords: ['smeštaj Fruška gora', 'vikendica sa bazenom', 'luksuzan odmor Novi Sad', 'iznajmljivanje vikendice karakteristike', 'privatni bazen vikendica','Bazen sa slanom vodom Fruška Gora','vikendica Fruška Gora sa bazenom'],
   alternates: {
     // Napomena: Ako se tvoj folder zove /smestaj, ostavi ovako. Ako je /o-nama, promeni reč na kraju linka.
-    canonical: 'https://vistanovi.vercel.app/smestaj', 
+    canonical: 'https://vistanovi.com/smestaj', 
   },
   openGraph: {
     title: 'Sadržaj i Smeštaj | Vista Nova',
     description: 'Saznajte zašto je naša vikendica sa bazenom savršeno mesto za vaš beg iz grada.',
-    url: 'https://vistanovi.vercel.app/smestaj',
+    url: 'https://vistanovi.com/smestaj',
   }
 };
 
