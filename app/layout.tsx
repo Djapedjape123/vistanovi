@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "Vista Novi | Vikendica na Fruškoj gori",
     description:
       "Privatna vikendica Vista Novi u Ledincima, Fruška Gora - odmor u prirodi sa bazenom i pogledom.",
-    url: "https://vistanovi.rs",
+    url: "https://vistanovi.com",
     siteName: "Vista Novi",
     locale: "sr_RS",
     type: "website",
@@ -89,8 +89,8 @@ export default function RootLayout({
     "@type": "LodgingBusiness",
     name: "Vista Novi",
     description:
-      "Privatna vikendica Vista Novi na Fruškoj gori, smeštena u Ledincima, Srbija.",
-    url: "https://vistanovi.rs",
+      "Privatna vikendica Vista Novi na Fruškoj gori, smeštena u Ledincima, Srbija. Opuštanje u prirodi sa privatnim bazenom i WiFi-jem, idealno za odmor i relaksaciju.",
+    url: "https://vistanovi.com",
     telephone: "+381 64 582 4612",
     email: "emilijagolubov@gmail.com",
     address: {
