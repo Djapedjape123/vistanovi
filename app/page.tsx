@@ -16,7 +16,7 @@ const HERO_IMAGES = [
 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
+
   const { t, activeLang } = useLanguage();
 
   const FEATURES = [
@@ -35,18 +35,17 @@ export default function Home() {
 
   return (
     <main className="w-full bg-[#1F3325]">
-      
+
       <div className="relative min-h-screen w-full overflow-hidden">
-        
+
         <div className="absolute inset-0 z-0">
           {HERO_IMAGES.map((imgUrl, index) => (
             <div
               key={imgUrl}
-              className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out ${
-                index === currentImageIndex
+              className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out ${index === currentImageIndex
                   ? 'opacity-100 scale-105'
                   : 'opacity-0 scale-100'
-              }`}
+                }`}
               style={{ backgroundImage: `url('${imgUrl}')` }}
             />
           ))}
@@ -57,10 +56,10 @@ export default function Home() {
           PODIZANJE WEATHER WIDGET-a NA MOBILNOM:
           -translate-y-6 ga pomera na gore na malim ekranima, a sm:translate-y-0 ga vraća na normalu za tablete i desktop.
         */}
-       <div className="relative z-20 -translate-y-6 sm:translate-y-0">
+        <div className="relative z-20 -translate-y-6 sm:translate-y-0">
           <WeatherWidget />
         </div>
-        
+
 
         <section className="relative z-10 flex min-h-screen flex-col justify-between px-6 pt-32 pb-12 mx-auto max-w-6xl">
           {/* 
@@ -68,7 +67,7 @@ export default function Home() {
             Povećali smo gornji padding (pt-28 umesto pt-12) i dodali mt-6, dok se na desktopu vraća na staro (sm:pt-12 sm:mt-0).
           */}
           <div className="flex flex-col items-start justify-center flex-1 max-w-3xl pt-28 mt-6 sm:pt-12 sm:mt-0">
-            
+
             <div className="inline-flex items-center gap-2 rounded-full bg-[#C19A5B]/20 border border-[#C19A5B]/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#C19A5B] backdrop-blur-md mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-[#C19A5B] animate-pulse" />
               {t.hero.badge}
@@ -101,7 +100,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12 pt-8 border-t border-[#F5EFE6]/10 flex flex-col md:flex-row items-center justify-between gap-6">
-            
+
             <div className="flex flex-wrap items-center gap-6 sm:gap-8">
               {FEATURES.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2.5 text-[#F5EFE6]/90 text-sm font-medium">
@@ -117,11 +116,10 @@ export default function Home() {
                   key={idx}
                   onClick={() => setCurrentImageIndex(idx)}
                   aria-label={`Prikaži sliku ${idx + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    idx === currentImageIndex
+                  className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentImageIndex
                       ? 'w-8 bg-[#C19A5B]'
                       : 'w-2 bg-[#F5EFE6]/40 hover:bg-[#F5EFE6]/70'
-                  }`}
+                    }`}
                 />
               ))}
             </div>
@@ -132,7 +130,7 @@ export default function Home() {
 
       <KakoDoNas />
       <ForecastSection />
-      
+
     </main>
   );
 }
