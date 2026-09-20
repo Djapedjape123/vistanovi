@@ -150,10 +150,10 @@ export default function KakoDoNas() {
                         </a>
                     </div>
 
-                    {/* DESNA STRANA: Google Mapa */}
+                    {/* DESNA STRANA: Google Mapa  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1077.879859407886!2d19.814332867498038!3d45.20924347486335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475b0fb1937f95af%3A0x7997f615cc26e3fb!2sVista%20Novi!5e1!3m2!1ssr!2srs!4v1789904759406!5m2!1ssr!2srs" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>*/}
                     <div className="lg:col-span-7 h-[400px] lg:h-auto min-h-[350px] overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-md p-2">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d523.5949286005344!2d19.816353134261675!3d45.20950991389186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475b0f003133a14f%3A0x8a27fdfd1f8f041d!2sNEMA%20DALJE!5e1!3m2!1ssr!2srs!4v1784829181282!5m2!1ssr!2srs"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1077.879859407886!2d19.814332867498038!3d45.20924347486335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475b0fb1937f95af%3A0x7997f615cc26e3fb!2sVista%20Novi!5e1!3m2!1ssr!2srs!4v1789904759406!5m2!1ssr!2srs"
                             width="100%"
                             height="100%"
                             style={{ border: 0, borderRadius: '1.25rem' }}
