@@ -28,13 +28,35 @@ export default function RezervacijeClient() {
     message: '',
   });
 
-  // --- LOGIKA ZA CENU ---
+  // --- LOGIKA ZA CENU (RADNI DAN vs VIKEND) ---
   
   const extraGuests = Math.max(0, formData.guests - 2);
-  const basePrice = nights * 105; // Osnovna cena samo po noćenjima SMANJENA NA 105
-  const totalPrice = basePrice + (extraGuests * 30); // Dodajemo 30€ jednokratno na ukupan iznos
-  // -------------------------------------------------------------i fiksno samo extraGuests * 30 ako je jednokratno
-  // ----------------------
+  
+  let basePrice = 0;
+  
+  if (dateRange?.from && dateRange?.to) {
+    // Pravimo kopiju početnog datuma da ne menjamo originalni state
+    let currentDate = new Date(dateRange.from);
+    const endDate = new Date(dateRange.to);
+
+    // Iteriramo kroz svaki dan boravka do dana izlaska
+    while (currentDate < endDate) {
+      const dayOfWeek = currentDate.getDay(); 
+      // getDay() vraća brojeve: 0 (Nedelja), 1 (Ponedeljak)... 5 (Petak), 6 (Subota)
+      
+      if (dayOfWeek === 5 || dayOfWeek === 6) {
+        basePrice += 120; // Vikend (Petak na subotu i Subota na nedelju)
+      } else {
+        basePrice += 105; // Radni dani i nedelja na ponedeljak
+      }
+      
+      // Pomeramo na sledeći dan
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  }
+
+  const totalPrice = basePrice + (extraGuests * 30); // Fiksno dodavanje za extra goste
+  // -------------------------------------------------------------
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));

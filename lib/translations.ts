@@ -100,7 +100,7 @@ export const translations = {
       of: 'OD',
       step1: {
         title: 'Kada planirate dolazak?',
-        subtitle: 'Izaberite slobodne datume (Cena: 105€ / noć)',
+        subtitle: 'Izaberite slobodne datume (Cena: 105€ / noć,vikend/praznik: 120€ / noć)',
         totalFor: 'Ukupno za',
         nightSingle: 'noćenje',
         nightPlural: 'noćenja',
@@ -256,7 +256,7 @@ export const translations = {
       of: 'OF',
       step1: {
         title: 'When are you planning to arrive?',
-        subtitle: 'Select available dates (Price: 105€ / night)',
+        subtitle: 'Select available dates (Price: 105€ / night,weekend/holiday: 120€ / night)',
         totalFor: 'Total for',
         nightSingle: 'night',
         nightPlural: 'nights',
