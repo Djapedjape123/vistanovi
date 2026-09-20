@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Users, Check, Dog, Loader2, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Users, Check, Dog, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { differenceInDays, format } from 'date-fns';
 import { srLatn, enUS } from 'date-fns/locale';
@@ -31,7 +31,7 @@ export default function RezervacijeClient() {
   // --- LOGIKA ZA CENU ---
   
   const extraGuests = Math.max(0, formData.guests - 2);
-  const basePrice = nights * 150; // Osnovna cena samo po noćenjima
+  const basePrice = nights * 105; // Osnovna cena samo po noćenjima SMANJENA NA 105
   const totalPrice = basePrice + (extraGuests * 30); // Dodajemo 30€ jednokratno na ukupan iznos
   // -------------------------------------------------------------i fiksno samo extraGuests * 30 ako je jednokratno
   // ----------------------
@@ -119,7 +119,7 @@ export default function RezervacijeClient() {
             </div>
 
             {nights > 0 ? (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-[#C19A5B]/10 border border-[#C19A5B]/30 mb-8 animate-in slide-in-from-bottom-2 fade-in">
+              <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl border mb-8 animate-in slide-in-from-bottom-2 fade-in ${nights < 2 ? 'bg-red-900/20 border-red-500/30' : 'bg-[#C19A5B]/10 border-[#C19A5B]/30'}`}>
                 <div className="text-center sm:text-left">
                   <div className="text-[#F5EFE6]/80 text-sm">
                     {format(dateRange!.from!, 'd. MMM', { locale: currentLocale })} - {format(dateRange!.to!, 'd. MMM yyyy', { locale: currentLocale })}
@@ -127,11 +127,22 @@ export default function RezervacijeClient() {
                   <div className="text-[#F5EFE6]/80 text-sm mt-1">
                     {t.booking.step1.totalFor} {nights} {nights === 1 ? t.booking.step1.nightSingle : t.booking.step1.nightPlural}
                   </div>
-                  <div className="font-serif text-2xl text-[#C19A5B]">{totalPrice} €</div>
+                  
+                  {nights < 2 ? (
+                     <div className="flex items-center gap-2 mt-2 text-red-400 font-medium">
+                        <AlertCircle size={16} />
+                        <span>{activeLang === 'SRB' ? 'Minimalni boravak je 2 noćenja' : 'Minimum stay is 2 nights'}</span>
+                     </div>
+                  ) : (
+                     <div className="font-serif text-2xl text-[#C19A5B] mt-1">{totalPrice} €</div>
+                  )}
                 </div>
-                <button onClick={nextStep} className="w-full sm:w-auto px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors">
-                  {t.booking.step1.confirmDates}
-                </button>
+                
+                {nights >= 2 && (
+                  <button onClick={nextStep} className="w-full sm:w-auto px-8 py-3 bg-[#C19A5B] text-[#1F3325] font-bold rounded-full hover:bg-[#d3ac6c] transition-colors">
+                    {t.booking.step1.confirmDates}
+                  </button>
+                )}
               </div>
             ) : (
               <div className="text-center text-[#F5EFE6]/50 italic">
