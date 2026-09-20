@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 ///
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vistanovi.com"),
+  metadataBase: new URL("https://www.vistanovi.com"),
   title: {
     default: "Vista Novi | Vikendica na Fruškoj gori",
     template: "%s | Vista Novi",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "Vista Novi | Vikendica na Fruškoj gori",
     description:
       "Privatna vikendica Vista Novi u Ledincima, Fruška Gora - odmor u prirodi sa bazenom i pogledom.",
-    url: "https://vistanovi.com",
+    url: "https://www.vistanovi.com",
     siteName: "Vista Novi",
     locale: "sr_RS",
     type: "website",
