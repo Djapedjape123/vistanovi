@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Suspense } from "react"; // 1. DODATO: Uvoz Suspense komponente
+import { Suspense } from "react";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LanguageProvider } from '@/components/LanguageContext';
 import SplashScreen from "@/components/SplashScreen";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
+import UrlCleaner from "@/components/UrlCleaner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -123,9 +124,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* 2. DODATO: Suspense blokira greške izazvane Instagram URL parametrima */}
         <Suspense fallback={<div className="min-h-screen bg-[#1F3325]"></div>}>
           <LanguageProvider>
+            <UrlCleaner />
             <Navbar />
             <SplashScreen />
             {children}

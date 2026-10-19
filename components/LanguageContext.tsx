@@ -16,20 +16,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      // Zaštita: Instagram WebView često blokira localStorage
       const savedLang = window.localStorage.getItem('lang') as Language;
       if (savedLang && (savedLang === 'SRB' || savedLang === 'ENG')) {
         setActiveLang(savedLang);
       }
     } catch (error) {
-      console.warn("localStorage je blokiran u ovom pretraživaču (Instagram WebView). Učitavam default jezik.");
+      console.warn("localStorage je blokiran u ovom pretraživaču.");
     }
   }, []);
 
   const handleSetLang = (lang: Language) => {
     setActiveLang(lang);
     try {
-      // Zaštita i prilikom pamćenja novog jezika
       window.localStorage.setItem('lang', lang);
     } catch (error) {
       console.warn("Nije moguće sačuvati jezik u localStorage.");
