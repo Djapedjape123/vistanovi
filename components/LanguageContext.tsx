@@ -1,13 +1,12 @@
-
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { translations, Language } from '@/lib/translations'; // Podesi putanju ako treba
+import { translations, Language } from '@/lib/translations';
 
 type LanguageContextType = {
   activeLang: Language;
   setActiveLang: (lang: Language) => void;
-  t: typeof translations.SRB; // Tipiziramo funkciju za prevode
+  t: typeof translations.SRB;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -15,20 +14,28 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [activeLang, setActiveLang] = useState<Language>('SRB');
 
-  // Opciono: Pamćenje jezika u localStorage da ostane kad klijent osveži stranicu
   useEffect(() => {
-    const savedLang = localStorage.getItem('lang') as Language;
-    if (savedLang && (savedLang === 'SRB' || savedLang === 'ENG')) {
-      setActiveLang(savedLang);
+    try {
+      // Zaštita: Instagram WebView često blokira localStorage
+      const savedLang = window.localStorage.getItem('lang') as Language;
+      if (savedLang && (savedLang === 'SRB' || savedLang === 'ENG')) {
+        setActiveLang(savedLang);
+      }
+    } catch (error) {
+      console.warn("localStorage je blokiran u ovom pretraživaču (Instagram WebView). Učitavam default jezik.");
     }
   }, []);
 
   const handleSetLang = (lang: Language) => {
     setActiveLang(lang);
-    localStorage.setItem('lang', lang);
+    try {
+      // Zaštita i prilikom pamćenja novog jezika
+      window.localStorage.setItem('lang', lang);
+    } catch (error) {
+      console.warn("Nije moguće sačuvati jezik u localStorage.");
+    }
   };
 
-  // 't' je objekat koji sadrži sve tekstove za trenutno aktivni jezik
   const t = translations[activeLang];
 
   return (
