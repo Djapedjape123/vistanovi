@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react"; // 1. DODATO: Uvoz Suspense komponente
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LanguageProvider } from '@/components/LanguageContext';
 import SplashScreen from "@/components/SplashScreen";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +17,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-///
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vistanovi.com"),
@@ -125,15 +123,17 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <LanguageProvider>
-          <Navbar />
-          <SplashScreen />
-          {children}
-          <WhatsAppButton />
-          <Footer />
-        </LanguageProvider>
+        {/* 2. DODATO: Suspense blokira greške izazvane Instagram URL parametrima */}
+        <Suspense fallback={<div className="min-h-screen bg-[#1F3325]"></div>}>
+          <LanguageProvider>
+            <Navbar />
+            <SplashScreen />
+            {children}
+            <WhatsAppButton />
+            <Footer />
+          </LanguageProvider>
+        </Suspense>
       </body>
     </html>
-
   );
 }
